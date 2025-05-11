@@ -1,0 +1,44 @@
+<!-- app/templates/edit_profile.html -->
+{% extends "base.html" %}
+
+{% block title %}Modifier le profil{% endblock %}
+
+{% block content %}
+    <h1 class="my-4">Modifier le profil</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="username" class="form-label">{{ form.username.label }}</label>
+            {{ form.username(class="form-control") }}
+            {% for error in form.username.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">{{ form.email.label }}</label>
+            {{ form.email(class="form-control") }}
+            {% for error in form.email.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="bio" class="form-label">{{ form.bio.label }}</label>
+            {{ form.bio(class="form-control") }}
+            {% for error in form.bio.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="avatar" class="form-label">{{ form.avatar.label }}</label>
+            {{ form.avatar(class="form-control") }}
+            {% for error in form.avatar.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            {% if current_user.avatar %}
+                <small class="form-text text-muted">Avatar actuel :</small>
+                <img src="{{ url_for('static', filename='uploads/' + current_user.avatar) }}" class="img-fluid rounded mt-2" style="max-width: 100px;" alt="Avatar actuel">
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
+{% endblock %}

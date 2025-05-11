@@ -1,0 +1,1 @@
+# Fonctions utilitaires de sécurité

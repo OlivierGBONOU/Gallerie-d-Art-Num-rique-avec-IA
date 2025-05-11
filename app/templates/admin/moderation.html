@@ -1,0 +1,35 @@
+<!-- app/templates/admin/moderation.html -->
+{% extends "base.html" %}
+
+{% block title %}Modération{% endblock %}
+
+{% block content %}
+    <h1>Modération des contenus signalés</h1>
+    {% if reports %}
+        <ul>
+            {% for report in reports %}
+                <li>
+                    <p><strong>Raison :</strong> {{ report.reason }}</p>
+                    {% if report.artwork %}
+                        <p><strong>Œuvre :</strong> {{ report.artwork.title }}</p>
+                        <form method="POST" action="{{ url_for('admin.delete_artwork', artwork_id=report.artwork.id) }}">
+                            <button type="submit">Supprimer l'œuvre</button>
+                        </form>
+                    {% elif report.comment %}
+                        <p><strong>Commentaire :</strong> {{ report.comment.content }}</p>
+                        <form method="POST" action="{{ url_for('admin.delete_comment', comment_id=report.comment.id) }}">
+                            <button type="submit">Supprimer le commentaire</button>
+                        </form>
+                    {% endif %}
+                    <p><strong>Signalé par :</strong> {{ report.user.username }}</p>
+                    <form method="POST" action="{{ url_for('admin.resolve_report', report_id=report.id) }}">
+                        <button type="submit">Marquer comme résolu</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun contenu signalé pour le moment.</p>
+    {% endif %}
+    <p><a href="{{ url_for('admin.dashboard') }}">Retour au tableau de bord</a></p>
+{% endblock %}

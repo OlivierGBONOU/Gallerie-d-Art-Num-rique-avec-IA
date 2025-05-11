@@ -1,0 +1,35 @@
+<!-- app/templates/admin/dashboard.html -->
+{% extends "base.html" %}
+
+{% block title %}Tableau de bord Admin{% endblock %}
+
+{% block content %}
+    <h1>Tableau de bord Admin</h1>
+    <h2>Utilisateurs</h2>
+    <ul>
+        {% for user in users %}
+            <li>{{ user.username }} ({{ user.email }}) 
+                {% if not user.is_admin %}
+                    <a href="{{ url_for('admin.block_user', user_id=user.id) }}">Bloquer</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <h2>Œuvres</h2>
+    <ul>
+        {% for artwork in artworks %}
+            <li>{{ artwork.title }} par {{ artwork.user.username }}
+                <a href="{{ url_for('admin.delete_artwork', artwork_id=artwork.id) }}">Supprimer</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2>Commentaires</h2>
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.content }} par {{ comment.user.username }}
+                <a href="{{ url_for('admin.delete_comment', comment_id=comment.id) }}">Supprimer</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <p><a href="{{ url_for('admin.moderation') }}">Voir les signalements</a></p>
+{% endblock %}

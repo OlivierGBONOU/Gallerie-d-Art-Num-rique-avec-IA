@@ -1,0 +1,41 @@
+<!-- app/templates/edit.html -->
+{% extends "base.html" %}
+
+{% block title %}Modifier {{ artwork.title }}{% endblock %}
+
+{% block content %}
+    <h1 class="my-4">Modifier {{ artwork.title }}</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            <label for="title" class="form-label">{{ form.title.label }}</label>
+            {{ form.title(class="form-control") }}
+            {% for error in form.title.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">{{ form.description.label }}</label>
+            {{ form.description(class="form-control") }}
+            {% for error in form.description.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">{{ form.image.label }}</label>
+            {{ form.image(class="form-control") }}
+            {% for error in form.image.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <small class="form-text text-muted">Laissez vide pour conserver l’image actuelle.</small>
+        </div>
+        <div class="mb-3">
+            <label for="emotion_target" class="form-label">{{ form.emotion_target.label }}</label>
+            {{ form.emotion_target(class="form-select") }}
+            {% for error in form.emotion_target.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
+{% endblock %}

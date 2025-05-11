@@ -1,0 +1,101 @@
+<!-- app/templates/artwork.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ artwork.title }}{% endblock %}
+
+{% block content %}
+    <div class="artwork-detail">
+        <h1 class="my-4">{{ artwork.title }}</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}" class="img-fluid rounded" alt="{{ artwork.title }}">
+            </div>
+            <div class="col-md-6">
+                <p>{{ artwork.description }}</p>
+                <p><strong>Émotion cible :</strong> {{ artwork.emotion_target }}</p>
+                <p><strong>Émotion détectée :</strong> {{ artwork.emotion_detected }}</p>
+                <form method="POST" action="{{ url_for('interactions.report_artwork', artwork_id=artwork.id) }}" class="mb-3">
+                    {{ form.hidden_tag() }}
+                    <textarea name="reason" class="form-control" placeholder="Raison du signalement" rows="2"></textarea>
+                    <button type="submit" class="btn btn-danger mt-2">Signaler l'œuvre</button>
+                </form>
+            </div>
+        </div>
+
+        <h2 class="my-4">Voter pour une émotion</h2>
+        <form method="POST" action="{{ url_for('interactions.vote', artwork_id=artwork.id) }}" class="mb-4">
+            {{ form.hidden_tag() }}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <select name="emotion_id" class="form-select">
+                        {% if emotions %}
+                            {% for emotion in emotions %}
+                                <option value="{{ emotion.id }}">{{ emotion.name }}</option>
+                            {% endfor %}
+                        {% else %}
+                            <option value="" disabled selected>Aucune émotion disponible</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary w-100">Voter</button>
+                </div>
+            </div>
+        </form>
+
+        <h2 class="my-4">Ajouter un commentaire</h2>
+        <form method="POST" action="{{ url_for('interactions.comment', artwork_id=artwork.id) }}" class="mb-4">
+            {{ form.hidden_tag() }}
+            <textarea name="content" class="form-control" placeholder="Votre commentaire" rows="4"></textarea>
+            <button type="submit" class="btn btn-primary mt-2">Commenter</button>
+        </form>
+
+        <h2 class="my-4">Commentaires</h2>
+        {% if artwork.comments %}
+            {% for comment in artwork.comments %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ comment.user.username }}</h5>
+                        <p class="card-text">{{ comment.content }}</p>
+                        <form method="POST" action="{{ url_for('interactions.report_comment', comment_id=comment.id) }}" class="d-inline">
+                            {{ form.hidden_tag() }}
+                            <textarea name="reason" class="form-control d-inline w-auto" placeholder="Raison du signalement" rows="1"></textarea>
+                            <button type="submit" class="btn btn-sm btn-danger">Signaler</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucun commentaire pour le moment.</p>
+        {% endif %}
+
+        <h2 class="my-4">Répartition des votes</h2>
+        <canvas id="emotionChart" class="mb-4"></canvas>
+        <script>
+            const ctx = document.getElementById('emotionChart').getContext('2d');
+            const emotionChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ emotions | map(attribute='name') | list | tojson }},
+                datasets: [{
+                    label: 'Votes par émotion',
+                    data: {{ vote_counts | tojson }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+
+    {% if wordcloud_img %}
+        <h2 class="my-4">Nuage de mots des commentaires</h2>
+        <img src="data:image/png;base64,{{ wordcloud_img }}" class="img-fluid" alt="Nuage de mots">
+    {% endif %}
+</div>
+{% endblock %}
