@@ -76,12 +76,11 @@ def create_app():
     app.register_blueprint(interactions.bp)
     app.register_blueprint(admin.bp)
 
-    # Commande CLI pour initialiser les émotions
+    """# Commande CLI pour initialiser les émotions
     emotion_cli = AppGroup('emotion', help='Commands for managing emotions')
 
     @emotion_cli.command('init')
     def init_emotions_command():
-        """Initialise les émotions dans la base de données."""
         from app.models import Emotion, DEFAULT_EMOTIONS
         with app.app_context():
             for emotion_name in DEFAULT_EMOTIONS:
@@ -101,10 +100,9 @@ def create_app():
 
     @user_cli.command('init')
     def init_users_command():
-        """Initialise les utilisateurs dans la base de données."""
-        from insert_users import insert_users
+        from Gallerium.gallerium.insert_data import insert_users
         insert_users()
 
-    app.cli.add_command(user_cli)
+    app.cli.add_command(user_cli)"""
 
     return app

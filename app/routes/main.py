@@ -12,7 +12,7 @@ bp = Blueprint('main', __name__)
 @bp.route('/', defaults={'page': 1})
 @bp.route('/page/<int:page>')
 def index(page):
-    per_page = 10  # Nombre d'œuvres par page
+    per_page = 8  # Nombre d'œuvres par page
     artworks = Artwork.query.paginate(page=page, per_page=per_page, error_out=False)
     emotions = Emotion.query.all()
     return render_template('index.html', artworks=artworks, emotions=emotions)

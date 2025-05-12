@@ -28,40 +28,32 @@
 
 /* Grille d'œuvres d'art - Modifications pour Gallerium */
 .artworks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  /* 
-  Explication détaillée :
-  - auto-fit : ajuste dynamiquement le nombre de colonnes
-  - minmax(250px, 1fr) : 
-      * Largeur minimale de 250px par carte
-      * S'étend pour remplir l'espace disponible 
-  */
-  gap: 1rem; /* Espace entre les cartes */
-  width: 100%; /* Utilise toute la largeur disponible */
-  margin: 1rem 0;
-}
-
-/* Variation pour différentes tailles d'écran */
-@media (max-width: 1200px) {
-  .artworks-grid {
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
   }
-}
 
-@media (max-width: 768px) {
-  .artworks-grid {
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 0.5rem; /* Réduction de l'espace entre les cartes sur mobile */
+  @media (max-width: 992px) {
+    .artworks-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
   }
-}
-
-@media (max-width: 480px) {
-  .artworks-grid {
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  
+  @media (max-width: 768px) {
+    .artworks-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 0.75rem;
+    }
   }
-}
-
+  
+  @media (max-width: 576px) {
+    .artworks-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
 
 /* Cartes d'œuvres d'art - Style amélioré pour Gallerium */
 .artwork-card {
@@ -96,13 +88,13 @@
 }
 
 .artwork-body {
-  padding: var(--card-padding);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 2;
-}
+    padding: 1rem; /* Réduit de 1.5rem à 1rem */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 2;
+  }
 
 .artwork-title {
   font-family: 'Playfair Display', serif;
@@ -253,7 +245,7 @@ h2:hover::after {
 
 /* Layout */
 .container {
-    max-width: 1200px;
+    max-width: 1400px; /* Augmente de 1200px à 1400px */
     padding: 0 1.5rem;
     margin: 0 auto;
 }
@@ -478,14 +470,10 @@ h2:hover::after {
 
 @media (max-width: 768px) {
     .artworks-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Augmente de 250px à 280px */
+      gap: 0.75rem;
     }
-    
-    .artwork-image-container {
-        height: 240px;
-    }
-}
+  }
 
 @media (max-width: 576px) {
     .artworks-grid {

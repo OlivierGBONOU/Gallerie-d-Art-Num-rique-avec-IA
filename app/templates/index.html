@@ -46,23 +46,24 @@
 <!-- Œuvres récentes -->
 <section class="mb-5">
     <h2 class="h4 mb-4">Œuvres récentes</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4 artworks-grid">
+    <div class="artworks-grid">
         {% for artwork in artworks.items %}
-            <div class="col">
-                <div class="card h-100 border-0 shadow-sm">
-                    <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}"
-                         class="card-img-top rounded"
-                         style="height: 200px; object-fit: cover;"
-                         alt="{{ artwork.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title h6">{{ artwork.title }}</h5>
-                        <p class="card-text text-muted small">Par {{ artwork.user.username }}</p>
-                        <a href="{{ url_for('main.artwork', artwork_id=artwork.id) }}" class="btn btn-outline-primary btn-sm">Voir plus</a>
-                    </div>
-                </div>
+          <div class="col">
+            <div class="artwork-card h-100">
+              <div class="artwork-image-container">
+                <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}"
+                     class="artwork-image"
+                     alt="{{ artwork.title }}">
+              </div>
+              <div class="artwork-body">
+                <h5 class="artwork-title">{{ artwork.title }}</h5>
+                <p class="artwork-artist">Par {{ artwork.user.username }}</p>
+                <a href="{{ url_for('main.artwork', artwork_id=artwork.id) }}" class="btn btn-outline-primary btn-sm">Voir plus</a>
+              </div>
             </div>
+          </div>
         {% endfor %}
-    </div>
+      </div>
 </section>
 
 <!-- Pagination -->
