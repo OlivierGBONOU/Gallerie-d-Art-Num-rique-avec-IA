@@ -4,48 +4,48 @@
 {% block title %}Inscription{% endblock %}
 
 {% block content %}
-    <h1>Inscription</h1>
-    <form method="POST" action="{{ url_for('auth.register') }}">
-        {{ form.hidden_tag() }}
-        <p>
-            <label for="username">Nom d'utilisateur</label><br>
-            {{ form.username(size=32) }}<br>
-            {% if form.username.errors %}
-                {% for error in form.username.errors %}
-                    <span class="error">{{ error }}</span><br>
-                {% endfor %}
-            {% endif %}
-        </p>
-        <p>
-            <label for="email">Email</label><br>
-            {{ form.email(size=32) }}<br>
-            {% if form.email.errors %}
-                {% for error in form.email.errors %}
-                    <span class="error">{{ error }}</span><br>
-                {% endfor %}
-            {% endif %}
-        </p>
-        <p>
-            <label for="password">Mot de passe</label><br>
-            {{ form.password(size=32) }}<br>
-            {% if form.password.errors %}
-                {% for error in form.password.errors %}
-                    <span class="error">{{ error }}</span><br>
-                {% endfor %}
-            {% endif %}
-        </p>
-        <p>
-            <label for="confirm_password">Confirmer le mot de passe</label><br>
-            {{ form.confirm_password(size=32) }}<br>
-            {% if form.confirm_password.errors %}
-                {% for error in form.confirm_password.errors %}
-                    <span class="error">{{ error }}</span><br>
-                {% endfor %}
-            {% endif %}
-        </p>
-        <p>
-            <button type="submit">S'inscrire</button>
-        </p>
-    </form>
-    <p>Déjà un compte ? <a href="{{ url_for('auth.login') }}">Connectez-vous</a></p>
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <h1 class="display-4 mb-4 text-center">Inscription</h1>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('auth.register') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">{{ form.username.label }}</label>
+                        {{ form.username(class="form-control") }}
+                        {% for error in form.username.errors %}
+                            <small class="text-danger d-block mt-1">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{ form.email.label }}</label>
+                        {{ form.email(class="form-control") }}
+                        {% for error in form.email.errors %}
+                            <small class="text-danger d-block mt-1">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">{{ form.password.label }}</label>
+                        {{ form.password(class="form-control") }}
+                        {% for error in form.password.errors %}
+                            <small class="text-danger d-block mt-1">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-4">
+                        <label for="confirm_password" class="form-label">{{ form.confirm_password.label }}</label>
+                        {{ form.confirm_password(class="form-control") }}
+                        {% for error in form.confirm_password.errors %}
+                            <small class="text-danger d-block mt-1">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button type="submit" class="btn btn-primary">S'inscrire</button>
+                        <a href="{{ url_for('auth.login') }}" class="text-primary">Déjà un compte ? Connectez-vous</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

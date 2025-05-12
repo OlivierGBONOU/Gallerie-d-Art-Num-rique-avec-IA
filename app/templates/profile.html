@@ -4,32 +4,50 @@
 {% block title %}Profil de {{ user.username }}{% endblock %}
 
 {% block content %}
-    <h1 class="my-4">Profil de {{ user.username }}</h1>
-    <p><strong>Email :</strong> {{ user.email }}</p>
-    <p><strong>Bio :</strong> {{ user.bio or 'Aucune bio définie.' }}</p>
-    {% if user.avatar %}
-        <img src="{{ url_for('static', filename='uploads/' + user.avatar) }}" class="profile-avatar" alt="Avatar">
-    {% endif %}
-    <a href="{{ url_for('user.edit_profile') }}" class="btn btn-warning mb-4">Modifier le profil</a>
-    <a href="{{ url_for('user.upload') }}" class="btn btn-primary mb-4">Ajouter une œuvre</a>
-
-    <h2 class="my-4">Mes œuvres</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4 artworks-grid">
-        {% for artwork in artworks %}
-            <div class="col artwork-card">
-                <div class="card h-100">
-                    <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}" class="card-img-top" alt="{{ artwork.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ artwork.title }}</h5>
-                        <a href="{{ url_for('main.artwork', artwork_id=artwork.id) }}" class="btn btn-primary">Voir plus</a>
-                        <a href="{{ url_for('user.edit', artwork_id=artwork.id) }}" class="btn btn-warning">Modifier</a>
-                        <form method="POST" action="{{ url_for('user.delete', artwork_id=artwork.id) }}" class="d-inline">
-                            {{ form.hidden_tag() }}
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Voulez-vous vraiment supprimer cette œuvre ?')">Supprimer</button>
-                        </form>
-                    </div>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <h1 class="display-4 mb-4 text-center">Profil de {{ user.username }}</h1>
+        <div class="card border-0 shadow-sm mb-5">
+            <div class="card-body text-center">
+                {% if user.avatar %}
+                    <img src="{{ url_for('static', filename='uploads/' + user.avatar) }}"
+                         class="rounded-circle border shadow-sm mb-3"
+                         style="width: 120px; height: 120px; object-fit: cover;"
+                         alt="Avatar">
+                {% endif %}
+                <p><strong>Email :</strong> {{ user.email }}</p>
+                <p><strong>Bio :</strong> {{ user.bio or 'Aucune bio définie.' }}</p>
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="{{ url_for('user.edit_profile') }}" class="btn btn-outline-warning">Modifier le profil</a>
+                    <a href="{{ url_for('user.upload') }}" class="btn btn-outline-primary">Ajouter une œuvre</a>
                 </div>
             </div>
-        {% endfor %}
+        </div>
+
+        <h2 class="h4 mb-4">Mes œuvres</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4 artworks-grid">
+            {% for artwork in artworks %}
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}"
+                             class="card-img-top rounded"
+                             style="height: 200px; object-fit: cover;"
+                             alt="{{ artwork.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title h6">{{ artwork.title }}</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a href="{{ url_for('main.artwork', artwork_id=artwork.id) }}" class="btn btn-outline-primary btn-sm">Voir plus</a>
+                                <a href="{{ url_for('user.edit', artwork_id=artwork.id) }}" class="btn btn-outline-warning btn-sm">Modifier</a>
+                                <form method="POST" action="{{ url_for('user.delete', artwork_id=artwork.id) }}">
+                                    {{ form.hidden_tag() }}
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer cette œuvre ?')">Supprimer</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+</div>
 {% endblock %}

@@ -4,86 +4,117 @@
 {% block title %}{{ artwork.title }}{% endblock %}
 
 {% block content %}
-    <div class="artwork-detail">
-        <h1 class="my-4">{{ artwork.title }}</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}" class="img-fluid rounded" alt="{{ artwork.title }}">
-            </div>
-            <div class="col-md-6">
-                <p>{{ artwork.description }}</p>
-                <p><strong>Émotion cible :</strong> {{ artwork.emotion_target }}</p>
-                <p><strong>Émotion détectée :</strong> {{ artwork.emotion_detected }}</p>
-                <p><strong>Likes :</strong> {{ artwork.likes | length }}</p>
-                {% if current_user.is_authenticated %}
-                    <form method="POST" action="{{ url_for('interactions.like_artwork', artwork_id=artwork.id) }}" class="mb-3">
-                        {{ form.hidden_tag() }}
-                        <button type="submit" class="btn btn-primary">
-                            {% if has_liked %}
-                                <i class="fas fa-heart"></i> Unlike
-                            {% else %}
-                                <i class="fas fa-heart"></i> Like
-                            {% endif %}
-                        </button>
-                    </form>
-                {% endif %}
-                <form method="POST" action="{{ url_for('interactions.report_artwork', artwork_id=artwork.id) }}" class="mb-3">
-                    {{ form.hidden_tag() }}
-                    <textarea name="reason" class="form-control" placeholder="Raison du signalement" rows="2"></textarea>
-                    <button type="submit" class="btn btn-danger mt-2">Signaler l'œuvre</button>
-                </form>
+<div class="container my-5">
+    <!-- Titre principal -->
+    <h1 class="display-4 mb-5 text-center">{{ artwork.title }}</h1>
+
+    <!-- Section principale : Image et détails -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}"
+                     class="card-img-top img-fluid rounded"
+                     style="max-height: 500px; object-fit: cover;"
+                     alt="{{ artwork.title }}">
             </div>
         </div>
-
-        <h2 class="my-4">Voter pour une émotion</h2>
-        <form method="POST" action="{{ url_for('interactions.vote', artwork_id=artwork.id) }}" class="mb-4">
-            {{ form.hidden_tag() }}
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <select name="emotion_id" class="form-select">
-                        {% if emotions %}
-                            {% for emotion in emotions %}
-                                <option value="{{ emotion.id }}">{{ emotion.name }}</option>
-                            {% endfor %}
-                        {% else %}
-                            <option value="" disabled selected>Aucune émotion disponible</option>
-                        {% endif %}
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <button type="submit" class="btn btn-primary w-100">Voter</button>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Détails de l'œuvre</h5>
+                    <p class="card-text">{{ artwork.description }}</p>
+                    <ul class="list-unstyled">
+                        <li><strong>Émotion cible :</strong> {{ artwork.emotion_target }}</li>
+                        <li><strong>Émotion détectée :</strong> {{ artwork.emotion_detected }}</li>
+                        <li><strong>Likes :</strong> {{ artwork.likes | length }}</li>
+                    </ul>
+                    {% if current_user.is_authenticated %}
+                        <form method="POST" action="{{ url_for('interactions.like_artwork', artwork_id=artwork.id) }}" class="mb-3">
+                            {{ form.hidden_tag() }}
+                            <button type="submit" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-heart me-1"></i>
+                                {% if has_liked %} Unlike {% else %} Like {% endif %}
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ url_for('interactions.report_artwork', artwork_id=artwork.id) }}">
+                            {{ form.hidden_tag() }}
+                            <div class="mb-2">
+                                <textarea name="reason" class="form-control" placeholder="Raison du signalement" rows="2"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Signaler l'œuvre</button>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
-        </form>
+        </div>
+    </div>
 
-        <h2 class="my-4">Ajouter un commentaire</h2>
-        <form method="POST" action="{{ url_for('interactions.comment', artwork_id=artwork.id) }}" class="mb-4">
+    <!-- Section : Voter pour une émotion -->
+    <section class="mb-5">
+        <h2 class="h4 mb-3">Voter pour une émotion</h2>
+        <form method="POST" action="{{ url_for('interactions.vote', artwork_id=artwork.id) }}" class="row g-3 align-items-center">
             {{ form.hidden_tag() }}
-            <textarea name="content" class="form-control" placeholder="Votre commentaire" rows="4"></textarea>
-            <button type="submit" class="btn btn-primary mt-2">Commenter</button>
+            <div class="col-md-6 col-lg-4">
+                <select name="emotion_id" class="form-select">
+                    {% if emotions %}
+                        {% for emotion in emotions %}
+                            <option value="{{ emotion.id }}">{{ emotion.name }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="" disabled selected>Aucune émotion disponible</option>
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col-md-6 col-lg-2">
+                <button type="submit" class="btn btn-primary">Voter</button>
+            </div>
         </form>
+    </section>
 
-        <h2 class="my-4">Commentaires</h2>
+    <!-- Section : Ajouter un commentaire -->
+    <section class="mb-5">
+        <h2 class="h4 mb-3">Ajouter un commentaire</h2>
+        <form method="POST" action="{{ url_for('interactions.comment', artwork_id=artwork.id) }}">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                <textarea name="content" class="form-control" placeholder="Votre commentaire" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Commenter</button>
+        </form>
+    </section>
+
+    <!-- Section : Commentaires -->
+    <section class="mb-5">
+        <h2 class="h4 mb-3">Commentaires</h2>
         {% if artwork.comments %}
             {% for comment in artwork.comments %}
-                <div class="card mb-3">
+                <div class="card mb-3 border-0 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">{{ comment.user.username }}</h5>
+                        <h5 class="card-title h6">{{ comment.user.username }}</h5>
                         <p class="card-text">{{ comment.content }}</p>
-                        <form method="POST" action="{{ url_for('interactions.report_comment', comment_id=comment.id) }}" class="d-inline">
-                            {{ form.hidden_tag() }}
-                            <textarea name="reason" class="form-control d-inline w-auto" placeholder="Raison du signalement" rows="1"></textarea>
-                            <button type="submit" class="btn btn-sm btn-danger">Signaler</button>
-                        </form>
+                        {% if current_user.is_authenticated %}
+                            <form method="POST" action="{{ url_for('interactions.report_comment', comment_id=comment.id) }}" class="d-flex align-items-center gap-2">
+                                {{ form.hidden_tag() }}
+                                <textarea name="reason" class="form-control form-control-sm" placeholder="Raison du signalement" rows="1" style="width: 200px;"></textarea>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Signaler</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <p>Aucun commentaire pour le moment.</p>
+            <p class="text-muted">Aucun commentaire pour le moment.</p>
         {% endif %}
+    </section>
 
-        <h2 class="my-4">Répartition des votes</h2>
-        <canvas id="emotionChart" class="mb-4"></canvas>
+    <!-- Section : Répartition des votes -->
+    <section class="mb-5">
+        <h2 class="h4 mb-3">Répartition des votes</h2>
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <canvas id="emotionChart" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
         <script>
             const ctx = document.getElementById('emotionChart').getContext('2d');
             const emotionChart = new Chart(ctx, {
@@ -100,15 +131,24 @@
                 },
                 options: {
                     scales: {
-                        y: { beginAtZero: true }
-                    }
+                        y: { beginAtZero: true },
+                    maintainAspectRatio: false
                 }
             });
         </script>
+    </section>
 
-        {% if wordcloud_img %}
-            <h2 class="my-4">Nuage de mots des commentaires</h2>
-            <img src="data:image/png;base64,{{ wordcloud_img }}" class="img-fluid" alt="Nuage de mots">
-        {% endif %}
-    </div>
+    <!-- Section : Nuage de mots -->
+    {% if wordcloud_img %}
+        <section class="mb-5">
+            <h2 class="h4 mb-3">Nuage de mots des commentaires</h2>
+            <div class="card border-0 shadow-sm">
+                <img src="data:image/png;base64,{{ wordcloud_img }}"
+                     class="card-img-top img-fluid rounded"
+                     style="max-height: 400px; object-fit: contain;"
+                     alt="Nuage de mots">
+            </div>
+        </section>
+    {% endif %}
+</div>
 {% endblock %}

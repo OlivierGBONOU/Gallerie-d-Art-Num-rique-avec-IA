@@ -4,14 +4,22 @@
 {% block title %}Gallerium{% endblock %}
 
 {% block content %}
-    <h1 class="my-4">Bienvenue sur Gallerium</h1>
-    <p>Explorez les œuvres d'art numériques et partagez vos émotions.</p>
+<div class="text-center mb-5">
+    <h1 class="display-3 mb-3">Bienvenue sur Gallerium</h1>
+    <p class="lead">Explorez les œuvres d'art numériques et partagez vos émotions.</p>
+</div>
 
-    <form method="GET" action="{{ url_for('main.search') }}" class="mb-4">
-        <div class="row g-3">
+<!-- Formulaire de recherche -->
+<section class="mb-5">
+    <form method="GET" action="{{ url_for('main.search') }}">
+        <div class="row g-3 align-items-center">
             <div class="col-md-4">
-                <input type="text" name="keyword" class="form-control" placeholder="Rechercher par mot-clé" value="{{ keyword or '' }}">
-                <i class="fas fa-search"></i>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" name="keyword" class="form-control border-start-0" placeholder="Rechercher par mot-clé" value="{{ keyword or '' }}">
+                </div>
             </div>
             <div class="col-md-3">
                 <select name="emotion" class="form-select">
@@ -33,47 +41,54 @@
             </div>
         </div>
     </form>
+</section>
 
-    <h2 class="my-4">Œuvres récentes</h2>
+<!-- Œuvres récentes -->
+<section class="mb-5">
+    <h2 class="h4 mb-4">Œuvres récentes</h2>
     <div class="row row-cols-1 row-cols-md-3 g-4 artworks-grid">
         {% for artwork in artworks.items %}
-            <div class="col artwork-card">
-                <div class="card h-100">
-                    <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}" class="card-img-top" alt="{{ artwork.title }}">
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="{{ url_for('static', filename='uploads/' + artwork.image_path) }}"
+                         class="card-img-top rounded"
+                         style="height: 200px; object-fit: cover;"
+                         alt="{{ artwork.title }}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ artwork.title }}</h5>
-                        <p class="card-text">Par {{ artwork.user.username }}</p>
-                        <a href="{{ url_for('main.artwork', artwork_id=artwork.id) }}" class="btn btn-primary">Voir plus</a>
+                        <h5 class="card-title h6">{{ artwork.title }}</h5>
+                        <p class="card-text text-muted small">Par {{ artwork.user.username }}</p>
+                        <a href="{{ url_for('main.artwork', artwork_id=artwork.id) }}" class="btn btn-outline-primary btn-sm">Voir plus</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+</section>
 
-    <!-- Pagination -->
-    {% if artworks.has_prev or artworks.has_next %}
-        <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-                {% if artworks.has_prev %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('main.index', page=artworks.prev_num) if not keyword else url_for('main.search', keyword=keyword, emotion=selected_emotion, page=artworks.prev_num) }}">« Précédent</a>
+<!-- Pagination -->
+{% if artworks.has_prev or artworks.has_next %}
+    <nav aria-label="Page navigation" class="mt-5">
+        <ul class="pagination justify-content-center">
+            {% if artworks.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('main.index', page=artworks.prev_num) if not keyword else url_for('main.search', keyword=keyword, emotion=selected_emotion, page=artworks.prev_num) }}">« Précédent</a>
+                </li>
+            {% endif %}
+            {% for page_num in artworks.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+                {% if page_num %}
+                    <li class="page-item {% if artworks.page == page_num %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('main.index', page=page_num) if not keyword else url_for('main.search', keyword=keyword, emotion=selected_emotion, page=page_num) }}">{{ page_num }}</a>
                     </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
                 {% endif %}
-                {% for page_num in artworks.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
-                    {% if page_num %}
-                        <li class="page-item {% if artworks.page == page_num %}active{% endif %}">
-                            <a class="page-link" href="{{ url_for('main.index', page=page_num) if not keyword else url_for('main.search', keyword=keyword, emotion=selected_emotion, page=page_num) }}">{{ page_num }}</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled"><span class="page-link">...</span></li>
-                    {% endif %}
-                {% endfor %}
-                {% if artworks.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="{{ url_for('main.index', page=artworks.next_num) if not keyword else url_for('main.search', keyword=keyword, emotion=selected_emotion, page=artworks.next_num) }}">Suivant »</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    {% endif %}
+            {% endfor %}
+            {% if artworks.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('main.index', page=artworks.next_num) if not keyword else url_for('main.search', keyword=keyword, emotion=selected_emotion, page=artworks.next_num) }}">Suivant »</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
 {% endblock %}
