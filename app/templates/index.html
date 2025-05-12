@@ -9,15 +9,23 @@
 
     <form method="GET" action="{{ url_for('main.search') }}" class="mb-4">
         <div class="row g-3">
-            <div class="col-md-6">
-                <input type="text" name="keyword" class="form-control" placeholder="Rechercher par mot-clé" value="{{ keyword or '' }}">
-            </div>
             <div class="col-md-4">
+                <input type="text" name="keyword" class="form-control" placeholder="Rechercher par mot-clé" value="{{ keyword or '' }}">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="col-md-3">
                 <select name="emotion" class="form-select">
                     <option value="">Toutes les émotions</option>
                     {% for emotion in emotions %}
                         <option value="{{ emotion.name }}" {% if emotion.name == selected_emotion %}selected{% endif %}>{{ emotion.name }}</option>
                     {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="sort" class="form-select">
+                    <option value="date_desc" {% if sort == 'date_desc' %}selected{% endif %}>Plus récent</option>
+                    <option value="date_asc" {% if sort == 'date_asc' %}selected{% endif %}>Plus ancien</option>
+                    <option value="likes" {% if sort == 'likes' %}selected{% endif %}>Plus liké</option>
                 </select>
             </div>
             <div class="col-md-2">

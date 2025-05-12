@@ -29,11 +29,14 @@
 body {
     font-family: 'Lora', serif; /* Typographie élégante, artistique */
     background-color: var(--background-color);
+    background: url('/static/images/canvas-texture.jpg') repeat center center;
+    background-size: cover;
     color: var(--text-color);
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
     min-height: 100vh;
+    animation: pageFadeIn 0.5s ease;
     background-image: linear-gradient(to bottom right, rgba(248, 249, 250, 0.9), rgba(248, 249, 250, 0.7));
 }
 
@@ -257,7 +260,6 @@ a:hover {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
 
@@ -646,6 +648,11 @@ textarea.form-control {
         width: 100px;
         height: 100px;
     }
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Typographies externes (à charger via CDN) */

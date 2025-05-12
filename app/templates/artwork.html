@@ -14,6 +14,19 @@
                 <p>{{ artwork.description }}</p>
                 <p><strong>Émotion cible :</strong> {{ artwork.emotion_target }}</p>
                 <p><strong>Émotion détectée :</strong> {{ artwork.emotion_detected }}</p>
+                <p><strong>Likes :</strong> {{ artwork.likes | length }}</p>
+                {% if current_user.is_authenticated %}
+                    <form method="POST" action="{{ url_for('interactions.like_artwork', artwork_id=artwork.id) }}" class="mb-3">
+                        {{ form.hidden_tag() }}
+                        <button type="submit" class="btn btn-primary">
+                            {% if has_liked %}
+                                <i class="fas fa-heart"></i> Unlike
+                            {% else %}
+                                <i class="fas fa-heart"></i> Like
+                            {% endif %}
+                        </button>
+                    </form>
+                {% endif %}
                 <form method="POST" action="{{ url_for('interactions.report_artwork', artwork_id=artwork.id) }}" class="mb-3">
                     {{ form.hidden_tag() }}
                     <textarea name="reason" class="form-control" placeholder="Raison du signalement" rows="2"></textarea>
@@ -77,25 +90,25 @@
                 type: 'bar',
                 data: {
                     labels: {{ emotions | map(attribute='name') | list | tojson }},
-                datasets: [{
-                    label: 'Votes par émotion',
-                    data: {{ vote_counts | tojson }},
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: { beginAtZero: true }
+                    datasets: [{
+                        label: 'Votes par émotion',
+                        data: {{ vote_counts | tojson }},
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 
-    {% if wordcloud_img %}
-        <h2 class="my-4">Nuage de mots des commentaires</h2>
-        <img src="data:image/png;base64,{{ wordcloud_img }}" class="img-fluid" alt="Nuage de mots">
-    {% endif %}
-</div>
+        {% if wordcloud_img %}
+            <h2 class="my-4">Nuage de mots des commentaires</h2>
+            <img src="data:image/png;base64,{{ wordcloud_img }}" class="img-fluid" alt="Nuage de mots">
+        {% endif %}
+    </div>
 {% endblock %}

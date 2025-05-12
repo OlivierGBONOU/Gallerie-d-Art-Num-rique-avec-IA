@@ -5,6 +5,10 @@ from wtforms import StringField, PasswordField, TextAreaField, SelectField, File
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from flask_wtf.file import FileField, FileAllowed
 
+class EmptyForm(FlaskForm):
+    """Formulaire vide utilisé pour valider le jeton CSRF uniquement."""
+    pass
+
 class LoginForm(FlaskForm):
     username = StringField('Nom d’utilisateur', validators=[DataRequired()])
     password = PasswordField('Mot de passe', validators=[DataRequired()])

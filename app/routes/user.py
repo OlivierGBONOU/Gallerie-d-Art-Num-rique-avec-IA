@@ -5,8 +5,7 @@ from werkzeug.utils import secure_filename
 import os
 from .. import db
 from ..models import Artwork, User, Emotion
-from ..forms import ArtworkForm, EditArtworkForm, ProfileForm
-from ..routes.interactions import EmptyForm
+from ..forms import ArtworkForm, EditArtworkForm, ProfileForm, EmptyForm
 from ..utils.emotion_analysis import analyze_emotion
 from config import Config
 
@@ -78,11 +77,11 @@ def edit(artwork_id):
 def delete(artwork_id):
     artwork = Artwork.query.get_or_404(artwork_id)
     if artwork.user_id != current_user.id:
-        flash('Vous n’êtes pas autorisé à supprimer cette œuvre.')
+        flash('Vous n’êtes pas autorisé à supprimer cette œuvre.', 'danger')
         return redirect(url_for('user.profile'))
     db.session.delete(artwork)
     db.session.commit()
-    flash('Œuvre supprimée.')
+    flash('Œuvre supprimée.', 'success')  # Ajouter la catégorie 'success'
     return redirect(url_for('user.profile'))
 
 @bp.route('/edit_profile', methods=['GET', 'POST'])

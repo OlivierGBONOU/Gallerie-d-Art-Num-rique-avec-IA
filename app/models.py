@@ -1,6 +1,7 @@
 # Modèles SQLAlchemy (Users, Artworks, Comments...)
 # app/models.py
 from flask_login import UserMixin
+from datetime import datetime
 from . import db
 
 DEFAULT_EMOTIONS = [
@@ -29,6 +30,7 @@ class Artwork(db.Model):
     emotion_target = db.Column(db.String(64), nullable=False)
     emotion_detected = db.Column(db.String(64))  # Champ pour l'émotion détectée
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     user = db.relationship('User', backref=db.backref('artworks', lazy=True))
     comments = db.relationship('Comment', backref='artwork', lazy=True)  # Nouvelle relation
 
@@ -57,3 +59,21 @@ class Report(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     resolved = db.Column(db.Boolean, default=False)
+    user = db.relationship('User', backref=db.backref('reports', lazy=True))
+    artwork = db.relationship('Artwork', backref=db.backref('reports', lazy=True))
+    comment = db.relationship('Comment', backref=db.backref('reports', lazy=True))
+    
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Admin destinataire
+    message = db.Column(db.String(256), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_read = db.Column(db.Boolean, default=False)
+    user = db.relationship('User', backref='notifications')
+    
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    artwork_id = db.Column(db.Integer, db.ForeignKey('artwork.id'), nullable=False)
+    user = db.relationship('User', backref='likes')
+    artwork = db.relationship('Artwork', backref='likes')

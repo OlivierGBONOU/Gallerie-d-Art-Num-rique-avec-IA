@@ -13,17 +13,20 @@
                     {% if report.artwork %}
                         <p><strong>Œuvre :</strong> {{ report.artwork.title }}</p>
                         <form method="POST" action="{{ url_for('admin.delete_artwork', artwork_id=report.artwork.id) }}">
-                            <button type="submit">Supprimer l'œuvre</button>
+                            {{ form.hidden_tag() }}
+                            <button type="submit" class="btn btn-danger">Supprimer l'œuvre</button>
                         </form>
                     {% elif report.comment %}
                         <p><strong>Commentaire :</strong> {{ report.comment.content }}</p>
                         <form method="POST" action="{{ url_for('admin.delete_comment', comment_id=report.comment.id) }}">
-                            <button type="submit">Supprimer le commentaire</button>
+                            {{ form.hidden_tag() }}
+                            <button type="submit" class="btn btn-danger">Supprimer le commentaire</button>
                         </form>
                     {% endif %}
                     <p><strong>Signalé par :</strong> {{ report.user.username }}</p>
                     <form method="POST" action="{{ url_for('admin.resolve_report', report_id=report.id) }}">
-                        <button type="submit">Marquer comme résolu</button>
+                        {{ form.hidden_tag() }}
+                        <button type="submit" class="btn btn-primary">Marquer comme résolu</button>
                     </form>
                 </li>
             {% endfor %}

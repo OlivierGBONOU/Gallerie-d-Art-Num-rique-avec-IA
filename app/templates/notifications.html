@@ -1,0 +1,26 @@
+<!-- app/templates/notifications.html -->
+{% extends "base.html" %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block content %}
+    <h1 class="my-4">Notifications</h1>
+    {% if notifications %}
+        <div class="list-group">
+            {% for notification in notifications %}
+                <div class="list-group-item {% if not notification.is_read %}list-group-item-warning{% endif %}">
+                    <p>{{ notification.message }}</p>
+                    <small>{{ notification.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+                    {% if not notification.is_read %}
+                        <form method="POST" action="{{ url_for('admin.mark_notification_read', notification_id=notification.id) }}" class="d-inline">
+                            {{ form.hidden_tag() }}
+                            <button type="submit" class="btn btn-sm btn-primary">Marquer comme lu</button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucune notification pour le moment.</p>
+    {% endif %}
+{% endblock %}

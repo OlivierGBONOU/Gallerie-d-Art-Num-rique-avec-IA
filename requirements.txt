@@ -1,18 +1,19 @@
 # Dépendances Python
-Flask
-Flask-Login
-Flask-WTF
-Flask-SQLAlchemy
-Flask-Migrate
+flask
+flask-sqlalchemy
+flask-login
+flask-wtf
+flask-mail
+flask-migrate
 psycopg2-binary
 email-validator
 Pillow
 transformers
+werkzeug
 torch
 spacy
 python-dotenv
 wordcloud
 matplotlib
-Flask-Mail
 pytest
 pytest-flask
