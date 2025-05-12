@@ -9,7 +9,7 @@ users = [
         "email": "gbonourichard44@gmail.com",
         "password": "oliviertyui2004",
         "bio": "Adminstrateur de Gallerium. Passionné d'art comptemporain.",
-        "avatar": "uploads/avatar0.jpg",
+        "avatar": "avatar0.jpg",
         "is_admin": True
     },
     {
@@ -17,7 +17,7 @@ users = [
         "email": "julie.peintre@example.com",
         "password": "password123",
         "bio": "Passionnée de peinture impressionniste, j'aime capturer la lumière.",
-        "avatar": "uploads/avatar1.jpg",
+        "avatar": "avatar1.jpg",
         "is_admin": False
     },
     {
@@ -25,7 +25,7 @@ users = [
         "email": "marc.artiste@example.com",
         "password": "password123",
         "bio": "Sculpteur amateur, inspiré par la nature et les formes organiques.",
-        "avatar": "uploads/avatar2.jpg",
+        "avatar": "avatar2.jpg",
         "is_admin": False
     },
     {
@@ -33,7 +33,7 @@ users = [
         "email": "sophie.dessin@example.com",
         "password": "password123",
         "bio": "Dessinatrice de portraits, toujours à la recherche d'émotions.",
-        "avatar": "uploads/avatar3.jpg",
+        "avatar": "avatar3.jpg",
         "is_admin": False
     },
     {
@@ -41,7 +41,7 @@ users = [
         "email": "luc.photographe@example.com",
         "password": "password123",
         "bio": "Photographe de rue, capturant la vie quotidienne.",
-        "avatar": "uploads/avatar4.jpg",
+        "avatar": "avatar4.jpg",
         "is_admin": False
     },
     {
@@ -49,7 +49,7 @@ users = [
         "email": "emma.create@example.com",
         "password": "password123",
         "bio": "Artiste numérique, j'explore les univers fantastiques.",
-        "avatar": "uploads/avatar5.jpg",
+        "avatar": "avatar5.jpg",
         "is_admin": False
     },
     {
@@ -57,7 +57,7 @@ users = [
         "email": "paul.peinture@example.com",
         "password": "password123",
         "bio": "Peintre abstrait, mes œuvres expriment le chaos intérieur.",
-        "avatar": "uploads/avatar6.jpg",
+        "avatar": "avatar6.jpg",
         "is_admin": False
     },
     {
@@ -65,7 +65,7 @@ users = [
         "email": "clara.vision@example.com",
         "password": "password123",
         "bio": "Aquarelliste, j'aime les paysages doux et apaisants.",
-        "avatar": "uploads/avatar7.jpg",
+        "avatar": "avatar7.jpg",
         "is_admin": False
     },
     {
@@ -73,7 +73,7 @@ users = [
         "email": "nico.sculpt@example.com",
         "password": "password123",
         "bio": "Sculpteur sur bois, inspiré par les traditions anciennes.",
-        "avatar": "uploads/avatar8.jpg",
+        "avatar": "avatar8.jpg",
         "is_admin": False
     },
     {
@@ -81,7 +81,7 @@ users = [
         "email": "lea.graphiste@example.com",
         "password": "password123",
         "bio": "Graphiste et illustratrice, fan de couleurs vives.",
-        "avatar": "uploads/avatar9.jpg",
+        "avatar": "avatar9.jpg",
         "is_admin": False
     },
     {
@@ -89,7 +89,7 @@ users = [
         "email": "theo.art@example.com",
         "password": "password123",
         "bio": "Artiste multidisciplinaire, je mélange peinture et collage.",
-        "avatar": "uploads/avatar10.jpg",
+        "avatar": "avatar10.jpg",
         "is_admin": False
     }
 ]
