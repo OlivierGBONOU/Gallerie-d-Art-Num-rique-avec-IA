@@ -96,19 +96,68 @@ if __name__ == "__main__":
                                 created_at=created_at)
                 db.session.add(artwork)
 
-            # Remplir les tables supplémentaires avec des données plausibles
+            # Remplir les tables supplémentaires avec des données plus riches
 
-            # Table Vote (exemple : chaque utilisateur vote pour une émotion sur chaque œuvre)
-            for artwork in artworks:
-                for user in users:
-                    if user["id"] != artwork["user_id"]:  # Un utilisateur ne vote pas sur sa propre œuvre
-                        vote_emotion_id = 1  # Par défaut, vote pour "Joie" (exemple)
-                        if artwork["emotion_target"] in ["Tristesse", "Peur", "Colère", "Dégoût"]:
-                            vote_emotion_id = emotions[[e["name"] for e in emotions].index(artwork["emotion_target"])]["id"]
-                        vote = Vote(artwork_id=artwork["id"], emotion_id=vote_emotion_id, user_id=user["id"])
-                        db.session.add(vote)
+            # Table Vote (plus de votes avec une répartition variée des émotions)
+            votes = [
+                # Votes pour l'œuvre 1 (La Joconde - Surprise)
+                {"artwork_id": 1, "emotion_id": 5, "user_id": 1},  # Surprise
+                {"artwork_id": 1, "emotion_id": 1, "user_id": 3},  # Joie
+                {"artwork_id": 1, "emotion_id": 5, "user_id": 4},  # Surprise
+                {"artwork_id": 1, "emotion_id": 2, "user_id": 5},  # Tristesse
+                {"artwork_id": 1, "emotion_id": 5, "user_id": 6},  # Surprise
+                # Votes pour l'œuvre 2 (La Nuit étoilée - Tristesse)
+                {"artwork_id": 2, "emotion_id": 2, "user_id": 1},  # Tristesse
+                {"artwork_id": 2, "emotion_id": 2, "user_id": 3},  # Tristesse
+                {"artwork_id": 2, "emotion_id": 4, "user_id": 4},  # Peur
+                {"artwork_id": 2, "emotion_id": 2, "user_id": 5},  # Tristesse
+                {"artwork_id": 2, "emotion_id": 1, "user_id": 6},  # Joie
+                # Votes pour l'œuvre 3 (Le Cri - Peur)
+                {"artwork_id": 3, "emotion_id": 4, "user_id": 1},  # Peur
+                {"artwork_id": 3, "emotion_id": 4, "user_id": 4},  # Peur
+                {"artwork_id": 3, "emotion_id": 3, "user_id": 5},  # Colère
+                {"artwork_id": 3, "emotion_id": 4, "user_id": 6},  # Peur
+                {"artwork_id": 3, "emotion_id": 6, "user_id": 7},  # Dégoût
+                # Votes pour l'œuvre 4 (Guernica - Colère)
+                {"artwork_id": 4, "emotion_id": 3, "user_id": 1},  # Colère
+                {"artwork_id": 4, "emotion_id": 3, "user_id": 3},  # Colère
+                {"artwork_id": 4, "emotion_id": 4, "user_id": 5},  # Peur
+                {"artwork_id": 4, "emotion_id": 3, "user_id": 6},  # Colère
+                {"artwork_id": 4, "emotion_id": 6, "user_id": 7},  # Dégoût
+                # Votes pour l'œuvre 5 (Les Nymphéas - Joie)
+                {"artwork_id": 5, "emotion_id": 1, "user_id": 1},  # Joie
+                {"artwork_id": 5, "emotion_id": 1, "user_id": 3},  # Joie
+                {"artwork_id": 5, "emotion_id": 1, "user_id": 4},  # Joie
+                {"artwork_id": 5, "emotion_id": 2, "user_id": 6},  # Tristesse
+                {"artwork_id": 5, "emotion_id": 1, "user_id": 7},  # Joie
+                # Votes pour d'autres œuvres (exemple pour quelques œuvres supplémentaires)
+                {"artwork_id": 6, "emotion_id": 1, "user_id": 1},  # Joie
+                {"artwork_id": 6, "emotion_id": 1, "user_id": 2},  # Joie
+                {"artwork_id": 7, "emotion_id": 5, "user_id": 2},  # Surprise
+                {"artwork_id": 8, "emotion_id": 1, "user_id": 1},  # Joie
+                {"artwork_id": 9, "emotion_id": 4, "user_id": 1},  # Peur
+                {"artwork_id": 10, "emotion_id": 3, "user_id": 1},  # Colère
+                {"artwork_id": 11, "emotion_id": 6, "user_id": 1},  # Dégoût
+                {"artwork_id": 12, "emotion_id": 5, "user_id": 1},  # Surprise
+                {"artwork_id": 13, "emotion_id": 2, "user_id": 1},  # Tristesse
+                {"artwork_id": 14, "emotion_id": 2, "user_id": 1},  # Tristesse
+                {"artwork_id": 15, "emotion_id": 6, "user_id": 1},  # Dégoût
+                {"artwork_id": 16, "emotion_id": 1, "user_id": 1},  # Joie
+                {"artwork_id": 17, "emotion_id": 4, "user_id": 1},  # Peur
+                {"artwork_id": 18, "emotion_id": 3, "user_id": 1},  # Colère
+                {"artwork_id": 19, "emotion_id": 4, "user_id": 1},  # Peur
+                {"artwork_id": 20, "emotion_id": 6, "user_id": 1},  # Dégoût
+                {"artwork_id": 21, "emotion_id": 5, "user_id": 1},  # Surprise
+                {"artwork_id": 22, "emotion_id": 1, "user_id": 1},  # Joie
+                {"artwork_id": 23, "emotion_id": 1, "user_id": 1},  # Joie
+                {"artwork_id": 24, "emotion_id": 5, "user_id": 1},  # Surprise
+                {"artwork_id": 25, "emotion_id": 6, "user_id": 1},  # Dégoût
+            ]
+            for vote_data in votes:
+                vote = Vote(artwork_id=vote_data["artwork_id"], emotion_id=vote_data["emotion_id"], user_id=vote_data["user_id"])
+                db.session.add(vote)
 
-            # Table Comment (exemple : chaque utilisateur laisse un commentaire sur quelques œuvres)
+            # Table Comment (plus de commentaires sur les œuvres)
             comments = [
                 {"content": "Magnifique travail, très émouvant!", "artwork_id": 1, "user_id": 3},
                 {"content": "Les couleurs sont sublimes!", "artwork_id": 2, "user_id": 4},
@@ -119,18 +168,50 @@ if __name__ == "__main__":
                 {"content": "Un peu perturbant mais fascinant.", "artwork_id": 9, "user_id": 9},
                 {"content": "Quel sens du détail!", "artwork_id": 10, "user_id": 10},
                 {"content": "Une œuvre qui interpelle.", "artwork_id": 11, "user_id": 1},
-                {"content": "Les formes sont hypnotiques.", "artwork_id": 12, "user_id": 2}
+                {"content": "Les formes sont hypnotiques.", "artwork_id": 12, "user_id": 2},
+                {"content": "Cette œuvre me touche profondément.", "artwork_id": 1, "user_id": 4},
+                {"content": "Je ressens une immense tristesse en la regardant.", "artwork_id": 2, "user_id": 5},
+                {"content": "Quelle puissance dans l'expression!", "artwork_id": 3, "user_id": 6},
+                {"content": "Un message fort et poignant.", "artwork_id": 4, "user_id": 7},
+                {"content": "Une belle invitation à la sérénité.", "artwork_id": 5, "user_id": 8},
+                {"content": "Une œuvre qui déborde de vie!", "artwork_id": 6, "user_id": 9},
+                {"content": "Un regard unique sur la réalité.", "artwork_id": 7, "user_id": 10},
+                {"content": "Magnifique représentation de l'amour.", "artwork_id": 8, "user_id": 1},
+                {"content": "Un voyage dans l'imaginaire!", "artwork_id": 9, "user_id": 2},
+                {"content": "Un symbole de liberté impressionnant.", "artwork_id": 10, "user_id": 3},
+                {"content": "Une œuvre qui dérange mais qui fait réfléchir.", "artwork_id": 11, "user_id": 4},
+                {"content": "Un chef-d'œuvre de l'abstraction.", "artwork_id": 12, "user_id": 5},
+                {"content": "Une sculpture qui parle à l'âme.", "artwork_id": 13, "user_id": 6},
+                {"content": "Un autoportrait très émouvant.", "artwork_id": 14, "user_id": 7},
+                {"content": "Une œuvre audacieuse et provocante.", "artwork_id": 15, "user_id": 8},
+                {"content": "Un hymne à la joie et au mouvement!", "artwork_id": 16, "user_id": 9},
+                {"content": "Une tragédie capturée avec intensité.", "artwork_id": 17, "user_id": 10},
+                {"content": "Une œuvre qui évoque une époque révolue.", "artwork_id": 18, "user_id": 1},
+                {"content": "La force de la nature est saisissante.", "artwork_id": 19, "user_id": 2},
+                {"content": "Une œuvre complexe et troublante.", "artwork_id": 20, "user_id": 3},
+                {"content": "Un dessin d'une précision incroyable.", "artwork_id": 21, "user_id": 4},
+                {"content": "Une scène empreinte de douceur.", "artwork_id": 22, "user_id": 5},
+                {"content": "Les couleurs vibrantes sont magnifiques!", "artwork_id": 23, "user_id": 6},
+                {"content": "Un concept très intéressant!", "artwork_id": 24, "user_id": 7},
+                {"content": "Une œuvre qui défie les conventions.", "artwork_id": 25, "user_id": 8},
             ]
             for comment_data in comments:
                 comment = Comment(content=comment_data["content"], artwork_id=comment_data["artwork_id"],
                                 user_id=comment_data["user_id"])
                 db.session.add(comment)
 
-            # Table Report (exemple : quelques signalements par des utilisateurs sur des œuvres ou commentaires)
+            # Table Report (plus de signalements sur des œuvres et commentaires)
             reports = [
                 {"reason": "Contenu inapproprié", "artwork_id": 15, "comment_id": None, "user_id": 7, "created_at": "2025-05-12 14:40:00"},
                 {"reason": "Langage offensant", "artwork_id": None, "comment_id": 3, "user_id": 8, "created_at": "2025-05-12 14:41:00"},
-                {"reason": "Image choquante", "artwork_id": 20, "comment_id": None, "user_id": 9, "created_at": "2025-05-12 14:42:00"}
+                {"reason": "Image choquante", "artwork_id": 20, "comment_id": None, "user_id": 9, "created_at": "2025-05-12 14:42:00"},
+                {"reason": "Contenu violent", "artwork_id": 4, "comment_id": None, "user_id": 3, "created_at": "2025-05-12 14:43:00"},
+                {"reason": "Commentaire inapproprié", "artwork_id": None, "comment_id": 5, "user_id": 4, "created_at": "2025-05-12 14:44:00"},
+                {"reason": "Œuvre dérangeante", "artwork_id": 17, "comment_id": None, "user_id": 5, "created_at": "2025-05-12 14:45:00"},
+                {"reason": "Contenu explicite", "artwork_id": 11, "comment_id": None, "user_id": 6, "created_at": "2025-05-12 14:46:00"},
+                {"reason": "Langage inapproprié", "artwork_id": None, "comment_id": 10, "user_id": 7, "created_at": "2025-05-12 14:47:00"},
+                {"reason": "Image perturbante", "artwork_id": 3, "comment_id": None, "user_id": 8, "created_at": "2025-05-12 14:48:00"},
+                {"reason": "Contenu choquant", "artwork_id": 25, "comment_id": None, "user_id": 9, "created_at": "2025-05-12 14:49:00"},
             ]
             for report_data in reports:
                 created_at = datetime.strptime(report_data["created_at"], "%Y-%m-%d %H:%M:%S")
@@ -139,11 +220,18 @@ if __name__ == "__main__":
                                 created_at=created_at)
                 db.session.add(report)
 
-            # Table Notification (exemple : notifications pour l'admin sur les signalements)
+            # Table Notification (plus de notifications pour l'admin sur les signalements)
             notifications = [
+                {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Les Demoiselles d'Avignon", "created_at": "2025-05-12 14:40:00"},
+                {"user_id": 1, "message": "Signalement sur le commentaire de l'œuvre Le Cri", "created_at": "2025-05-12 14:41:00"},
+                {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Le Jardin des délices", "created_at": "2025-05-12 14:42:00"},
                 {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Guernica", "created_at": "2025-05-12 14:43:00"},
-                {"user_id": 1, "message": "Signalement sur le commentaire de l'œuvre Le Cri", "created_at": "2025-05-12 14:44:00"},
-                {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Le Jardin des délices", "created_at": "2025-05-12 14:45:00"}
+                {"user_id": 1, "message": "Signalement sur le commentaire de l'œuvre Les Nymphéas", "created_at": "2025-05-12 14:44:00"},
+                {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Le Radeau de la Méduse", "created_at": "2025-05-12 14:45:00"},
+                {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Le Déjeuner sur l'herbe", "created_at": "2025-05-12 14:46:00"},
+                {"user_id": 1, "message": "Signalement sur le commentaire de l'œuvre La Liberté guidant le peuple", "created_at": "2025-05-12 14:47:00"},
+                {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Le Cri", "created_at": "2025-05-12 14:48:00"},
+                {"user_id": 1, "message": "Nouveau signalement sur l'œuvre Olympia", "created_at": "2025-05-12 14:49:00"},
             ]
             for notification_data in notifications:
                 created_at = datetime.strptime(notification_data["created_at"], "%Y-%m-%d %H:%M:%S")
@@ -151,7 +239,7 @@ if __name__ == "__main__":
                                         created_at=created_at)
                 db.session.add(notification)
 
-            # Table Like (exemple : chaque utilisateur aime quelques œuvres)
+            # Table Like (inchangé)
             likes = [
                 {"user_id": 3, "artwork_id": 1},
                 {"user_id": 4, "artwork_id": 2},
@@ -172,5 +260,5 @@ if __name__ == "__main__":
             db.session.commit()
             print("Base de données recréée avec succès !")
         else:
-                print("Utilisateurs déjà présents dans la base de données.")
+            print("Utilisateurs déjà présents dans la base de données.")
     app.run(debug=True, use_reloader=True, reloader_type='stat')

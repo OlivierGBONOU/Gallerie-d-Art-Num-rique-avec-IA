@@ -1,35 +1,250 @@
-<!-- app/templates/admin/dashboard.html -->
 {% extends "base.html" %}
-
 {% block title %}Tableau de bord Admin{% endblock %}
-
 {% block content %}
-    <h1>Tableau de bord Admin</h1>
-    <h2>Utilisateurs</h2>
-    <ul>
-        {% for user in users %}
-            <li>{{ user.username }} ({{ user.email }}) 
-                {% if not user.is_admin %}
-                    <a href="{{ url_for('admin.block_user', user_id=user.id) }}">Bloquer</a>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-    <h2>Œuvres</h2>
-    <ul>
-        {% for artwork in artworks %}
-            <li>{{ artwork.title }} par {{ artwork.user.username }}
-                <a href="{{ url_for('admin.delete_artwork', artwork_id=artwork.id) }}">Supprimer</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <h2>Commentaires</h2>
-    <ul>
-        {% for comment in comments %}
-            <li>{{ comment.content }} par {{ comment.user.username }}
-                <a href="{{ url_for('admin.delete_comment', comment_id=comment.id) }}">Supprimer</a>
-            </li>
-        {% endfor %}
-    </ul>
-    <p><a href="{{ url_for('admin.moderation') }}">Voir les signalements</a></p>
+<div class="admin-dashboard">
+    <header class="dashboard-header">
+        <h1>Tableau de bord Admin</h1>
+        <div class="dashboard-actions">
+            <a href="{{ url_for('admin.moderation') }}" class="btn btn-primary">
+                <i class="fas fa-flag"></i> Voir les signalements
+            </a>
+        </div>
+    </header>
+   
+    <div class="dashboard-grid">
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h2>Utilisateurs</h2>
+                <span class="badge">{{ users|length }}</span>
+            </div>
+            <div class="card-body">
+                <ul class="dashboard-list">
+                    {% for user in users %}
+                        <li class="list-item">
+                            <div class="item-info">
+                                <strong>{{ user.username }}</strong>
+                                <span class="item-email">{{ user.email }}</span>
+                            </div>
+                            {% if not user.is_admin %}
+                                <a href="{{ url_for('admin.block_user', user_id=user.id) }}" class="btn btn-sm btn-outline">
+                                    <i class="fas fa-ban"></i> Bloquer
+                                </a>
+                            {% else %}
+                                <span class="badge badge-admin">Admin</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+       
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h2>Œuvres</h2>
+                <span class="badge">{{ artworks|length }}</span>
+            </div>
+            <div class="card-body">
+                <ul class="dashboard-list">
+                    {% for artwork in artworks %}
+                        <li class="list-item">
+                            <div class="item-info">
+                                <strong>{{ artwork.title }}</strong>
+                                <span class="item-author">par {{ artwork.user.username }}</span>
+                            </div>
+                            <a href="{{ url_for('admin.delete_artwork', artwork_id=artwork.id) }}" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+       
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h2>Commentaires</h2>
+                <span class="badge">{{ comments|length }}</span>
+            </div>
+            <div class="card-body">
+                <ul class="dashboard-list">
+                    {% for comment in comments %}
+                        <li class="list-item">
+                            <div class="item-info">
+                                <q class="comment-content">{{ comment.content }}</q>
+                                <span class="item-author">par {{ comment.user.username }}</span>
+                            </div>
+                            <a href="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </div>
+</div>
+<style>
+    .admin-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    }
+
+    .dashboard-header h1 {
+    font-size: 1.75rem;
+    color: #111827;
+    margin: 0;
+    font-weight: 600;
+    }
+
+    .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    gap: 0.5rem;
+    }
+
+    .btn-primary {
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    }
+
+    .btn-primary:hover {
+    background-color: #4338ca;
+    }
+
+    .btn-outline {
+    border: 1px solid #d1d5db;
+    color: #374151;
+    }
+
+    .btn-outline:hover {
+    background-color: #f3f4f6;
+    }
+
+    .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    }
+
+    .btn-danger {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    }
+
+    .btn-danger:hover {
+    background-color: #dc2626;
+    }
+
+    .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    }
+
+    .dashboard-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    }
+
+    .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    }
+
+    .card-header h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: 600;
+    color: #374151;
+    }
+
+    .badge {
+    background-color: #e5e7eb;
+    color: #4b5563;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    }
+
+    .badge-admin {
+    background-color: #818cf8;
+    color: white;
+    }
+
+    .card-body {
+    padding: 0;
+    }
+
+    .dashboard-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    }
+
+    .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    }
+
+    .list-item:last-child {
+    border-bottom: none;
+    }
+
+    .item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+    }
+
+    .item-info strong {
+    font-weight: 600;
+    color: #111827;
+    }
+
+    .item-email, .item-author {
+    font-size: 0.875rem;
+    color: #6b7280;
+    }
+
+    .comment-content {
+    display: block;
+    font-style: italic;
+    margin-bottom: 0.25rem;
+    color: #4b5563;
+    font-size: 0.9375rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    }
+</style>
 {% endblock %}

@@ -24,7 +24,8 @@ def dashboard():
 @admin_required
 def notifications():
     notifications = Notification.query.filter_by(user_id=current_user.id).order_by(Notification.created_at.desc()).all()
-    return render_template('notifications.html', notifications=notifications)
+    form = EmptyForm()
+    return render_template('notifications.html', notifications=notifications, form=form)
 
 @bp.route('/notification/<int:notification_id>/mark_read', methods=['POST'])
 @login_required

@@ -106,38 +106,7 @@
             <p class="text-muted">Aucun commentaire pour le moment.</p>
         {% endif %}
     </section>
-
-    <!-- Section : Répartition des votes -->
-    <section class="mb-5">
-        <h2 class="h4 mb-3">Répartition des votes</h2>
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <canvas id="emotionChart" style="max-height: 300px;"></canvas>
-            </div>
-        </div>
-        <script>
-            const ctx = document.getElementById('emotionChart').getContext('2d');
-            const emotionChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: {{ emotions | map(attribute='name') | list | tojson }},
-                    datasets: [{
-                        label: 'Votes par émotion',
-                        data: {{ vote_counts | tojson }},
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: { beginAtZero: true },
-                    maintainAspectRatio: false
-                }
-            });
-        </script>
-    </section>
-
+    
     <!-- Section : Nuage de mots -->
     {% if wordcloud_img %}
         <section class="mb-5">
