@@ -1,211 +1,169 @@
-# Documentation projet
-## 🎯 **Projet Gallerium – Cahier des Charges Explicité**
+# Gallerium - Plateforme de Partage d'Art
 
-**Gallerium** est une plateforme web collaborative destinée à l’exposition d’œuvres d’art numériques. Elle utilise l’intelligence artificielle pour analyser les émotions transmises par les œuvres et permet aux visiteurs d’interagir en exprimant leurs ressentis. L’objectif est de créer une expérience artistique collective basée sur les émotions.
+**Gallerium** est une plateforme web développée avec **Flask** permettant aux utilisateurs de partager, découvrir et interagir avec des œuvres d'art numériques. Les utilisateurs peuvent télécharger des images, créer des profils, commenter des œuvres, recevoir des notifications et gérer leurs interactions. Une interface d'administration est également disponible pour modérer le contenu et gérer les utilisateurs.
 
----
+## Table des matières
+- [Gallerium - Plateforme de Partage d'Art](#gallerium---plateforme-de-partage-dart)
+  - [Table des matières](#table-des-matières)
+  - [Fonctionnalités](#fonctionnalités)
+  - [Technologies utilisées](#technologies-utilisées)
+  - [Structure du projet](#structure-du-projet)
+  - [Prérequis](#prérequis)
+  - [Installation](#installation)
+  - [Utilisation](#utilisation)
+  - [Accès administrateur](#accès-administrateur)
+  - [Tests](#tests)
+  - [Contribuer](#contribuer)
+  - [Licence](#licence)
 
-## 1. 🎯 **Objectifs du Projet**
+## Fonctionnalités
+- **Authentification** : Inscription, connexion et gestion de profils utilisateurs.
+- **Gestion d'œuvres** : Téléchargement, modification et suppression d'images artistiques.
+- **Interactions** : Commentaires, likes et notifications pour les interactions entre utilisateurs.
+- **Administration** : Tableau de bord pour modérer les contenus et gérer les utilisateurs.
+- **Analyse émotionnelle** : Analyse des commentaires pour détecter les émotions (via `emotion_analysis.py`).
+- **Nuage de mots** : Génération de nuages de mots à partir des descriptions des œuvres (via `wordcloud_generator.py`).
+- **Personnalisation** : Interface utilisateur avec CSS personnalisé et JavaScript pour des interactions dynamiques.
 
-Le projet a plusieurs objectifs principaux :
+## Technologies utilisées
+- **Backend** : Python 3, Flask
+- **Base de données** : SQLite (`gallerium.db`)
+- **Frontend** : HTML, CSS, JavaScript
+- **Tests** : Pytest
+- **Autres** : Gestion des dépendances avec `requirements.txt`, configuration via `config.py`
 
-1. **Pour les artistes** :
-
-   * Proposer un espace personnel pour publier leurs créations numériques.
-   * Obtenir une **analyse émotionnelle automatique** de leur œuvre, générée par IA à partir de la description textuelle.
-
-2. **Pour les visiteurs** :
-
-   * Explorer les œuvres, interagir avec elles en exprimant leurs émotions (via un système de votes).
-   * Commenter les œuvres librement pour enrichir les retours artistiques.
-
-3. **Pour la communauté** :
-
-   * Afficher des visualisations collectives des émotions perçues (graphiques, nuages de mots).
-   * Encourager une lecture participative et émotionnelle de l’art.
-
----
-
-## 2. 🔧 **Fonctionnalités Attendues**
-
-### 2.1. 👤 **Fonctionnalités Utilisateur (Frontend + Backend)**
-
-* **Inscription / Connexion / Déconnexion**
-
-  * Authentification sécurisée via **Flask-Login**.
-
-* **Gestion de profil**
-
-  * Création de profil avec photo/avatar, bio, et affichage de la galerie personnelle.
-
-* **Ajout d’œuvres**
-
-  * Upload d’images (formats `.jpg` ou `.png`, max 5 Mo).
-  * Champs obligatoires : titre, description, mots-clés.
-  * L’artiste choisit une **émotion cible** associée à l’œuvre (ex : joie, colère, tristesse...).
-
-* **Visualisation des œuvres**
-
-  * Page de consultation des œuvres avec :
-
-    * Image,
-    * Informations (titre, auteur, description, émotion cible),
-    * Réactions émotionnelles des visiteurs (sous forme de votes),
-    * Commentaires des visiteurs.
-
-* **Interactions**
-
-  * Les visiteurs peuvent :
-
-    * Voter pour une émotion ressentie.
-    * Laisser des commentaires.
-    * Voir la perception globale via un graphique.
-
----
-
-### 2.2. 🧠 **Fonctionnalités d’Analyse IA**
-
-* Utilisation de **modèles NLP** (type spaCy ou Hugging Face Transformers) pour :
-
-  * Analyser la **description textuelle** des œuvres.
-  * Identifier les **émotions dominantes** et les **mots-clés** pertinents.
-
-* Résultats de l’analyse :
-
-  * Un **histogramme des émotions** (via **Chart.js**) basé sur les réactions et l’analyse IA.
-  * Un **nuage de mots** issu des commentaires des visiteurs.
-
----
-
-### 2.3. 🔐 **Fonctionnalités d’Administration**
-
-* Tableau de bord pour les administrateurs avec :
-
-  * Modération des commentaires et œuvres signalées.
-  * Suppression ou blocage de comptes.
-  * Gestion des signalements (contenus inappropriés, abus, etc.).
-
----
-
-## 3. 🏗️ **Architecture Technique**
-
-### Backend
-
-* **Flask** : gestion du serveur, des routes et sessions.
-* **SQLAlchemy** : gestion de la base de données avec ORM.
-* **Flask-Login** : authentification.
-* **Flask-WTF** : formulaires sécurisés.
-* **Pillow** ou **Cloudinary** : pour la gestion et le redimensionnement d’images.
-* **Modèle NLP** : spaCy, ou un modèle de type BERT pour détecter les émotions.
-
-### Frontend
-
-* **HTML/CSS (Jinja2)** : templates dynamiques.
-* **JavaScript** :
-
-  * **Chart.js** : graphiques interactifs.
-  * **D3.js** : visualisations avancées (optionnel).
-* **AJAX** : interactions sans rechargement (votes, commentaires...).
-
-### Base de Données (PostgreSQL)
-
-* **Tables principales** :
-
-  * `Users` : informations sur les comptes.
-  * `Artworks` : métadonnées et fichiers des œuvres.
-  * `Emotions` : émotions associées aux œuvres.
-  * `Comments` : commentaires des utilisateurs.
-  * `Votes` : votes émotionnels sur les œuvres.
-
----
-
-## 4. 🎨 **Design & Expérience Utilisateur (UX)**
-
-* **Interface épurée, claire, moderne**, responsive pour tous supports.
-* Navigation fluide entre les galeries, les profils, et les œuvres.
-* Recherche d’œuvres par **mot-clé** ou **émotion perçue**.
-* Interaction simple et intuitive (voter, commenter, explorer).
-* Visualisation claire des données d’analyse (graphiques, nuages de mots).
-
----
-
-## 5. ⚠️ **Contraintes & Sécurité**
-
-* Taille maximale des images : **5 Mo**.
-* Système de **modération** humaine pour les œuvres et commentaires.
-* Sécurité Web :
-
-  * **Protection CSRF** avec Flask-WTF,
-  * **Prévention XSS et SQL Injection** via ORM et validation stricte.
-* Respect du **RGPD** :
-
-  * Fonction de **suppression de compte**.
-  * Possibilité d’anonymiser ses données.
-  * Politique de confidentialité claire.
-
----
-
-## 📁 Structure de Dossiers – Projet Gallerium
-
+## Structure du projet
 ```
-gallerium/
-│
-├── app/                           # Dossier principal de l'application Flask
-│   ├── __init__.py               # Initialisation de l'application (Flask app factory)
-│   ├── models.py                 # Modèles SQLAlchemy (Users, Artworks, Comments...)
-│   ├── forms.py                  # Formulaires Flask-WTF
-│   ├── routes/
-│   │   ├── __init__.py
-│   │   ├── main.py              # Routes publiques (accueil, galerie, vue d’œuvre)
-│   │   ├── auth.py              # Authentification (login, register)
-│   │   ├── user.py              # Pages utilisateur (profil, upload)
-│   │   ├── admin.py             # Routes admin (modération, gestion comptes)
-│   ├── static/                   # Fichiers statiques (JS, CSS, images)
-│   │   ├── css/
-│   │   ├── js/
-│   │   │   ├── charts.js        # Intégration Chart.js
-│   │   │   └── ajax.js          # AJAX pour votes/commentaires
-│   │   └── uploads/             # Images uploadées par les artistes
-│   ├── templates/                # Fichiers HTML Jinja2
-│   │   ├── base.html            # Template de base (header, footer, etc.)
-│   │   ├── index.html
-│   │   ├── login.html
-│   │   ├── register.html
-│   │   ├── profile.html
-│   │   ├── artwork.html         # Page œuvre individuelle
-│   │   └── admin/
-│   │       ├── dashboard.html
-│   │       └── moderation.html
-│   ├── utils/
-│   │   ├── emotion_analysis.py  # Module d’analyse NLP (émotions + mots-clés)
-│   │   ├── image_processing.py  # Gestion images (compression, redimensionnement)
-│   │   └── security.py          # Fonctions utilitaires de sécurité
-│
-├── config.py                     # Fichier de configuration (dev, prod, DB, clés API)
-├── run.py                        # Script de lancement de l'application
-├── requirements.txt              # Dépendances Python
-├── README.md                     # Documentation projet
-└── instance/
-    └── config.py                 # Configuration privée (clé secrète, DB locale)
+├── .gitignore                # Fichiers/dossiers ignorés par Git
+├── config.py                 # Configuration globale de l'application
+├── README.md                 # Documentation du projet
+├── requirements.txt          # Dépendances Python
+├── run.py                    # Point d'entrée de l'application
+├── tree.txt                  # Arborescence du projet
+├── instance/
+│   ├── config.py             # Configuration spécifique à l'instance
+│   ├── gallerium.db          # Base de données SQLite
+├── app/
+│   ├── __init__.py           # Initialisation de l'application Flask
+│   ├── forms.py              # Formulaires WTForms
+│   ├── models.py             # Modèles SQLAlchemy
+│   ├── routes/               # Routes de l'application
+│   │   ├── admin.py          # Routes pour l'administration
+│   │   ├── auth.py           # Routes pour l'authentification
+│   │   ├── interactions.py   # Routes pour les interactions utilisateur
+│   │   ├── main.py           # Routes principales
+│   │   ├── user.py           # Routes pour la gestion des profils
+│   ├── static/               # Fichiers statiques
+│   │   ├── css/style.css     # Styles personnalisés
+│   │   ├── images/           # Images statiques
+│   │   ├── js/               # Scripts JavaScript
+│   │   ├── uploads/          # Images téléchargées par les utilisateurs
+│   ├── templates/            # Modèles HTML
+│   │   ├── admin/            # Templates pour l'administration
+│   │   ├── *.html            # Templates pour les pages principales
+│   ├── utils/                # Fonctions utilitaires
+│   │   ├── decorators.py     # Décorateurs personnalisés (ex. restriction admin)
+│   │   ├── emotion_analysis.py # Analyse émotionnelle des commentaires
+│   │   ├── image_processing.py # Traitement des images (à implémenter)
+│   │   ├── security.py       # Fonctions de sécurité (à implémenter)
+│   │   ├── wordcloud_generator.py # Génération de nuages de mots
+├── logs/
+│   ├── error.log             # Journal des erreurs
+├── tests/
+│   ├── conftest.py           # Configuration des tests
+│   ├── test_models.py        # Tests des modèles
+│   ├── test_routes.py        # Tests des routes
 ```
 
----
+## Prérequis
+- Python 3.11+
+- Git
+- Navigateur web moderne
 
-## 🛠️ Technologies recommandées à installer dans `requirements.txt`
+## Installation
+1. Clonez le dépôt :
+   ```bash
+   git clone https://github.com/votre-utilisateur/gallerium.git
+   cd gallerium
+   ```
 
-```txt
-Flask
-Flask-Login
-Flask-WTF
-Flask-SQLAlchemy
-Flask-Migrate
-psycopg2-binary
-email-validator
-Pillow
-transformers
-torch
-spacy
-python-dotenv
+2. Créez un environnement virtuel :
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
+   ```
+
+3. Installez les dépendances :
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Configurez la base de données :
+   - Assurez-vous que `instance/config.py` contient les configurations nécessaires (ex. `SECRET_KEY`).
+   - Initialisez la base de données en exécutant :
+     ```python
+     from app import db
+     db.create_all()
+     ```
+
+5. Lancez l'application :
+   ```bash
+   python run.py
+   ```
+
+6. Accédez à l'application via `http://localhost:5000`.
+
+## Utilisation
+- **Inscription/Connexion** : Créez un compte ou connectez-vous via `/register` ou `/login`.
+- **Téléchargement d'œuvres** : Accédez à `/upload` pour partager vos images.
+- **Profil utilisateur** : Consultez et modifiez votre profil via `/profile`.
+- **Interactions** : Commentez et likez les œuvres via les pages des œuvres.
+- **Administration** : Les administrateurs peuvent accéder au tableau de bord via `/admin/dashboard`.
+
+## Accès administrateur
+Les pages réservées aux administrateurs (comme `/admin/dashboard` et `/admin/moderation`) sont protégées par un décorateur défini dans `app/utils/decorators.py` (probablement `@admin_required`). Pour qu'un utilisateur accède à ces pages :
+1. L'utilisateur doit être authentifié.
+2. L'utilisateur doit avoir un rôle `admin` dans la base de données (table `users`, champ `role` ou équivalent).
+3. Lors de l'inscription ou via une action manuelle dans la base de données, un administrateur doit attribuer le rôle `admin` à l'utilisateur.
+4. Une fois connecté, l'administrateur peut accéder aux routes sous `/admin/*` pour gérer les utilisateurs, modérer les contenus et consulter les statistiques.
+
+Exemple de configuration dans `app/models.py` :
+```python
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    role = db.Column(db.String(20), default='user')  # 'user' ou 'admin'
 ```
 
----
+Exemple de décorateur dans `app/utils/decorators.py` :
+```python
+from functools import wraps
+from flask_login import current_user
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.role != 'admin':
+            abort(403)
+        return f(*args, **kwargs)
+    return decorated_function
+```
+
+## Tests
+Les tests sont situés dans le dossier `tests/` et utilisent **Pytest**. Pour exécuter les tests :
+```bash
+pytest
+```
+- `test_models.py` : Tests des modèles de la base de données.
+- `test_routes.py` : Tests des routes de l'application.
+
+## Contribuer
+1. Forkez le projet.
+2. Créez une branche pour votre fonctionnalité (`git checkout -b feature/nouvelle-fonctionnalite`).
+3. Committez vos modifications (`git commit -m "Ajout de nouvelle fonctionnalité"`).
+4. Poussez votre branche (`git push origin feature/nouvelle-fonctionnalite`).
+5. Ouvrez une Pull Request.
+
+## Licence
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+```
