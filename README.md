@@ -1,147 +1,295 @@
-# Gallerium - Plateforme de Partage d'Art
+# Gallerium - README
 
-**Gallerium** est une plateforme web développée avec **Flask** permettant aux utilisateurs de partager, découvrir et interagir avec des œuvres d'art numériques. Les utilisateurs peuvent télécharger des images, créer des profils, commenter des œuvres, recevoir des notifications et gérer leurs interactions. Une interface d'administration est également disponible pour modérer le contenu et gérer les utilisateurs.
+Gallerium est une plateforme web développée avec Flask, conçue pour permettre aux utilisateurs de partager, découvrir et interagir avec des œuvres d'art numériques tout en explorant les émotions qu'elles suscitent. Ce document présente une description complète des fonctionnalités, de l'architecture, des dépendances, de l'installation et des instructions pour contribuer au projet.
 
 ## Table des matières
-- [Gallerium - Plateforme de Partage d'Art](#gallerium---plateforme-de-partage-dart)
+
+- [Gallerium - README](#gallerium---readme)
   - [Table des matières](#table-des-matières)
-  - [Fonctionnalités](#fonctionnalités)
-  - [Technologies utilisées](#technologies-utilisées)
-  - [Structure du projet](#structure-du-projet)
-  - [Prérequis](#prérequis)
-  - [Installation](#installation)
-  - [Utilisation](#utilisation)
-  - [Accès administrateur](#accès-administrateur)
+  - [Présentation du projet](#présentation-du-projet)
+  - [Fonctionnalités principales](#fonctionnalités-principales)
+    - [Pour tous les utilisateurs](#pour-tous-les-utilisateurs)
+    - [Pour les utilisateurs connectés](#pour-les-utilisateurs-connectés)
+    - [Pour les administrateurs](#pour-les-administrateurs)
+  - [Architecture du projet](#architecture-du-projet)
+  - [Dépendances](#dépendances)
+  - [Installation et configuration](#installation-et-configuration)
+    - [Prérequis](#prérequis)
+    - [Étapes d'installation](#étapes-dinstallation)
+    - [Configuration des variables d'environnement](#configuration-des-variables-denvironnement)
+    - [Lancement de l'application](#lancement-de-lapplication)
   - [Tests](#tests)
   - [Contribuer](#contribuer)
+    - [Bonnes pratiques](#bonnes-pratiques)
   - [Licence](#licence)
 
-## Fonctionnalités
-- **Authentification** : Inscription, connexion et gestion de profils utilisateurs.
-- **Gestion d'œuvres** : Téléchargement, modification et suppression d'images artistiques.
-- **Interactions** : Commentaires, likes et notifications pour les interactions entre utilisateurs.
-- **Administration** : Tableau de bord pour modérer les contenus et gérer les utilisateurs.
-- **Analyse émotionnelle** : Analyse des commentaires pour détecter les émotions (via `emotion_analysis.py`).
-- **Nuage de mots** : Génération de nuages de mots à partir des descriptions des œuvres (via `wordcloud_generator.py`).
-- **Personnalisation** : Interface utilisateur avec CSS personnalisé et JavaScript pour des interactions dynamiques.
+## Présentation du projet
 
-## Technologies utilisées
-- **Backend** : Python 3, Flask
-- **Base de données** : SQLite (`gallerium.db`)
-- **Frontend** : HTML, CSS, JavaScript
-- **Tests** : Pytest
-- **Autres** : Gestion des dépendances avec `requirements.txt`, configuration via `config.py`
+Gallerium est une plateforme sociale dédiée à l'art numérique, où les utilisateurs peuvent partager leurs créations, voter pour les émotions associées aux œuvres, commenter, et interagir avec une communauté d'artistes. L'application intègre des fonctionnalités d'analyse émotionnelle basée sur le NLP (Natural Language Processing) pour détecter les émotions dans les descriptions des œuvres, ainsi que des outils de modération pour garantir un environnement sûr et respectueux. Elle utilise une interface moderne avec Bootstrap et Chart.js pour une expérience utilisateur fluide et visuellement attrayante.
 
-## Structure du projet
+Le projet est conçu pour être modulaire, avec une séparation claire entre les routes, les modèles, les formulaires, et les utilitaires. Il inclut également des tests unitaires pour assurer la robustesse du code.
+
+## Fonctionnalités principales
+
+### Pour tous les utilisateurs
+
+- **Exploration des œuvres** :
+  - Parcourir une liste paginée d'œuvres récentes sur la page d'accueil (`/`) avec un affichage en grille responsive.
+  - Accéder à une page dédiée pour chaque œuvre (`/artwork/<id>`) avec des détails tels que le titre, la description, l'image, l'émotion cible, l'émotion détectée, et un compteur de likes.
+  - Visualiser un nuage de mots généré à partir des commentaires associés à une œuvre (si disponible).
+  - Consulter un graphique de répartition des votes émotionnels pour chaque œuvre.
+
+- **Recherche avancée** :
+  - Rechercher des œuvres par mot-clé (titre ou description) via un formulaire sur la page d'accueil.
+  - Filtrer les œuvres par émotion cible (ex. Joie, Tristesse).
+  - Trier les résultats par date (ascendant/descendant) ou par nombre de likes.
+
+- **Navigation intuitive** :
+  - Interface utilisateur moderne avec une barre de navigation responsive.
+  - Pagination pour naviguer facilement entre les pages d'œuvres.
+  - Messages flash pour informer des actions réussies ou des erreurs (ex. "Œuvre ajoutée avec succès").
+
+### Pour les utilisateurs connectés
+
+- **Authentification** :
+  - Inscription avec validation des champs (nom d'utilisateur unique, email valide, mot de passe confirmé) (`/register`).
+  - Connexion sécurisée avec hachage des mots de passe (`/login`).
+  - Déconnexion (`/logout`).
+
+- **Gestion du profil** :
+  - Visualiser son profil avec avatar, bio, email, et liste des œuvres publiées (`/profile`).
+  - Modifier le profil, y compris le nom d'utilisateur, l'email, la bio, et l'avatar (images JPEG/PNG uniquement) (`/edit_profile`).
+
+- **Gestion des œuvres** :
+  - Ajouter une œuvre avec un titre, une description, une image (JPEG/PNG, max 16MB), et une émotion cible (`/upload`).
+  - Modifier une œuvre existante (titre, description, image facultative, émotion cible) (`/edit/<id>`).
+  - Supprimer une œuvre avec confirmation via une boîte de dialogue (`/delete/<id>`).
+  - Analyse automatique de l'émotion dans la description de l'œuvre grâce à un modèle NLP (j-hartmann/emotion-english-distilroberta-base).
+
+- **Interactions avec les œuvres** :
+  - Aimer (liker) ou retirer son like sur une œuvre (`/like/<id>`).
+  - Voter pour une émotion associée à une œuvre (une seule fois par utilisateur) (`/vote/<id>`).
+  - Ajouter un commentaire sur une œuvre (`/comment/<id>`).
+  - Signaler une œuvre ou un commentaire inapproprié avec une raison spécifiée (`/report/<id>` ou `/report_comment/<id>`).
+
+### Pour les administrateurs
+
+- **Tableau de bord d'administration** (`/admin/dashboard`) :
+  - Lister tous les utilisateurs, œuvres et commentaires.
+  - Bloquer un utilisateur (sauf les autres administrateurs).
+  - Supprimer une œuvre ou un commentaire.
+  - Accéder à la page de modération.
+
+- **Modération** (`/admin/moderation`) :
+  - Consulter les signalements non résolus (œuvres ou commentaires) avec les raisons et les utilisateurs concernés.
+  - Supprimer le contenu signalé ou marquer le signalement comme résolu.
+  - Ignorer un signalement sans supprimer le contenu.
+
+- **Notifications** (`/admin/notifications`) :
+  - Recevoir des notifications pour chaque nouveau signalement (œuvre ou commentaire).
+  - Marquer les notifications comme lues.
+  - Recevoir des emails automatiques pour chaque signalement (configurable via Mailtrap ou un autre serveur SMTP).
+
+- **Commandes CLI** :
+  - Initialiser les émotions par défaut dans la base de données (`flask emotion init`).
+  - Insérer des utilisateurs prédéfinis pour les tests ou la démo (`flask user init`).
+
+## Architecture du projet
+
+L'application suit une architecture modulaire avec une séparation claire des responsabilités :
+
+- **Configuration** :
+  - `config.py` : Définit les paramètres globaux (clé secrète, URI de la base de données, configuration email, etc.).
+  - `instance/config.py` : Contient les configurations sensibles (non versionnées).
+
+- **Application principale** :
+  - `app/__init__.py` : Initialise l'application Flask, les extensions (SQLAlchemy, Flask-Login, Flask-Mail, etc.), et enregistre les blueprints.
+  - `run.py` : Point d'entrée pour lancer l'application, crée les tables et initialise les données (émotions, utilisateurs).
+
+- **Modèles** (`app/models.py`) :
+  - Définit les entités de la base de données : `User`, `Artwork`, `Emotion`, `Vote`, `Comment`, `Report`, `Notification`, `Like`.
+  - Relations entre les entités (ex. un utilisateur peut avoir plusieurs œuvres, une œuvre peut avoir plusieurs commentaires).
+
+- **Formulaires** (`app/forms.py`) :
+  - Formulaires Flask-WTF pour la connexion, l'inscription, l'ajout/modification d'œuvres, et la gestion du profil.
+  - Validations des champs (ex. email valide, extensions de fichiers autorisées).
+
+- **Routes** (`app/routes/`) :
+  - `main.py` : Routes publiques pour la page d'accueil, la recherche, et les pages d'œuvres.
+  - `auth.py` : Routes pour l'authentification (connexion, inscription, déconnexion).
+  - `user.py` : Routes pour la gestion du profil et des œuvres.
+  - `interactions.py` : Routes pour les interactions (likes, votes, commentaires, signalements).
+  - `admin.py` : Routes pour l'administration et la modération.
+
+- **Utilitaires** (`app/utils/`) :
+  - `emotion_analysis.py` : Analyse des émotions dans les descriptions via un modèle NLP.
+  - `image_processing.py` : Validation et redimensionnement des images téléchargées.
+  - `security.py` : Nettoyage des entrées utilisateur et gestion des mots de passe.
+  - `wordcloud_generator.py` : Génération de nuages de mots à partir des commentaires.
+  - `decorators.py` : Décorateur pour restreindre l'accès aux administrateurs.
+
+- **Templates** (`app/templates/`) :
+  - Templates HTML avec Jinja2 pour l'interface utilisateur, basés sur Bootstrap 5.
+  - Inclut des formulaires, des grilles d'œuvres, des graphiques (Chart.js), et des notifications.
+
+- **Statique** (`app/static/`) :
+  - `js/ajax.js` : Gestion des interactions asynchrones (likes, commentaires).
+  - `js/charts.js` : Création de graphiques pour l'engagement (likes, commentaires).
+  - `css/style.css` : Styles personnalisés pour l'interface.
+
+- **Tests** (`tests/`) :
+  - Tests unitaires pour les modèles (`test_models.py`) et les routes (`test_routes.py`).
+  - Configuration des fixtures pour une base de données en mémoire (`conftest.py`).
+
+- **Scripts utilitaires** :
+  - `insert_users.py` : Script pour insérer des utilisateurs prédéfinis dans la base de données.
+
+## Dépendances
+
+Les dépendances sont listées dans `requirements.txt` :
+
 ```
-├── .gitignore                # Fichiers/dossiers ignorés par Git
-├── config.py                 # Configuration globale de l'application
-├── README.md                 # Documentation du projet
-├── requirements.txt          # Dépendances Python
-├── run.py                    # Point d'entrée de l'application
-├── tree.txt                  # Arborescence du projet
-├── instance/
-│   ├── config.py             # Configuration spécifique à l'instance
-│   ├── gallerium.db          # Base de données SQLite
-├── app/
-│   ├── __init__.py           # Initialisation de l'application Flask
-│   ├── forms.py              # Formulaires WTForms
-│   ├── models.py             # Modèles SQLAlchemy
-│   ├── routes/               # Routes de l'application
-│   │   ├── admin.py          # Routes pour l'administration
-│   │   ├── auth.py           # Routes pour l'authentification
-│   │   ├── interactions.py   # Routes pour les interactions utilisateur
-│   │   ├── main.py           # Routes principales
-│   │   ├── user.py           # Routes pour la gestion des profils
-│   ├── static/               # Fichiers statiques
-│   │   ├── css/style.css     # Styles personnalisés
-│   │   ├── images/           # Images statiques
-│   │   ├── js/               # Scripts JavaScript
-│   │   ├── uploads/          # Images téléchargées par les utilisateurs
-│   ├── templates/            # Modèles HTML
-│   │   ├── admin/            # Templates pour l'administration
-│   │   ├── *.html            # Templates pour les pages principales
-│   ├── utils/                # Fonctions utilitaires
-│   │   ├── decorators.py     # Décorateurs personnalisés (ex. restriction admin)
-│   │   ├── emotion_analysis.py # Analyse émotionnelle des commentaires
-│   │   ├── image_processing.py # Traitement des images (à implémenter)
-│   │   ├── security.py       # Fonctions de sécurité (à implémenter)
-│   │   ├── wordcloud_generator.py # Génération de nuages de mots
-├── logs/
-│   ├── error.log             # Journal des erreurs
-├── tests/
-│   ├── conftest.py           # Configuration des tests
-│   ├── test_models.py        # Tests des modèles
-│   ├── test_routes.py        # Tests des routes
+flask
+flask-sqlalchemy
+flask-login
+flask-wtf
+flask-mail
+flask-migrate
+psycopg2-binary
+email-validator
+Pillow
+transformers
+werkzeug
+torch
+spacy
+python-dotenv
+wordcloud
+matplotlib
+pytest
+pytest-flask
 ```
 
-## Prérequis
-- Python 3.11+
-- Git
-- Navigateur web moderne
+Ces dépendances incluent :
+- **Flask et extensions** : Framework web, ORM, authentification, formulaires, emails, migrations.
+- **Bibliothèques d'image et NLP** : Traitement des images (Pillow), analyse émotionnelle (transformers, torch), génération de nuages de mots (wordcloud).
+- **Tests** : Framework de test (pytest) et intégration Flask (pytest-flask).
+- **Utilitaires** : Validation des emails, gestion des variables d'environnement.
 
-## Installation
-1. Clonez le dépôt :
+## Installation et configuration
+
+### Prérequis
+
+- Python 3.8 ou supérieur
+- pip (gestionnaire de paquets Python)
+- SQLite (par défaut) ou PostgreSQL (optionnel)
+- Compte Mailtrap (ou autre serveur SMTP) pour les emails
+- Git (pour cloner le dépôt)
+
+### Étapes d'installation
+
+1. **Cloner le dépôt** :
    ```bash
-   git clone https://github.com/OlivierGBONOU/Gallerie-d-Art-Num-rique-avec-IA.git
+   git clone https://github.com/votre-utilisateur/gallerium.git
    cd gallerium
    ```
 
-2. Créez un environnement virtuel :
+2. **Créer un environnement virtuel** :
    ```bash
    python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   venv\Scripts\activate     # Windows
+   source venv/bin/activate  # Sur Windows : venv\Scripts\activate
    ```
 
-3. Installez les dépendances :
+3. **Installer les dépendances** :
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Configurez la base de données :
-   - Assurez-vous que `instance/config.py` contient les configurations nécessaires (ex. `SECRET_KEY`).
-   - Initialisez la base de données en exécutant :
-     ```python
-     from app import db
-     db.create_all()
-     ```
+4. **Configurer les variables d'environnement** :
+   Créer un fichier `.env` dans le répertoire racine avec les variables suivantes :
+   ```
+   SECRET_KEY=votre_clé_secrète
+   DATABASE_URL=sqlite:///gallerium.db  # Ou URL PostgreSQL
+   MAIL_SERVER=smtp.mailtrap.io
+   MAIL_PORT=2525
+   MAIL_USE_TLS=True
+   MAIL_USERNAME=votre_utilisateur_mailtrap
+   MAIL_PASSWORD=votre_mot_de_passe_mailtrap
+   MAIL_DEFAULT_SENDER=votre_email@example.com
+   ```
 
-5. Lancez l'application :
+5. **Initialiser la base de données** :
+   ```bash
+   flask db init
+   flask db migrate
+   flask db upgrade
+   ```
+
+6. **Insérer les données initiales** :
+   ```bash
+   flask emotion init
+   flask user init
+   ```
+
+### Configuration des variables d'environnement
+
+- `SECRET_KEY` : Clé secrète pour la sécurité des sessions.
+- `DATABASE_URL` : URI de la base de données (SQLite par défaut, PostgreSQL en production).
+- `MAIL_*` : Configuration du serveur SMTP pour les notifications par email.
+- Assurez-vous que les variables sensibles ne sont pas versionnées (utilisez `.gitignore` pour le fichier `.env`).
+
+### Lancement de l'application
+
+1. **Activer l'environnement virtuel** (si ce n'est pas déjà fait) :
+   ```bash
+   source venv/bin/activate
+   ```
+
+2. **Lancer l'application** :
    ```bash
    python run.py
    ```
 
-6. Accédez à l'application via `http://localhost:5000`.
-
-## Utilisation
-- **Inscription/Connexion** : Créez un compte ou connectez-vous via `/register` ou `/login`.
-- **Téléchargement d'œuvres** : Accédez à `/upload` pour partager vos images.
-- **Profil utilisateur** : Consultez et modifiez votre profil via `/profile`.
-- **Interactions** : Commentez et likez les œuvres via les pages des œuvres.
-- **Administration** : Les administrateurs peuvent accéder au tableau de bord via `/admin/dashboard`.
-
-## Accès administrateur
-Les pages réservées aux administrateurs (comme `/admin/dashboard` et `/admin/moderation`) sont protégées par un décorateur défini dans `app/utils/decorators.py` (probablement `@admin_required`). Pour qu'un utilisateur accède à ces pages :
-1. L'utilisateur doit être authentifié.
-2. L'utilisateur doit avoir un rôle `admin` dans la base de données.
-3. Lors de l'inscription ou via une action manuelle dans la base de données, un administrateur doit attribuer le rôle `admin` à l'utilisateur.
-4. Une fois connecté, l'administrateur peut accéder aux routes sous `/admin/*` pour gérer les utilisateurs, modérer les contenus et consulter les statistiques.
+3. **Accéder à l'application** :
+   Ouvrez un navigateur et allez à `http://127.0.0.1:5000`.
 
 ## Tests
-Les tests sont situés dans le dossier `tests/` et utilisent **Pytest**. Pour exécuter les tests :
-```bash
-pytest
-```
-- `test_models.py` : Tests des modèles de la base de données.
-- `test_routes.py` : Tests des routes de l'application.
+
+Le projet inclut des tests unitaires pour les modèles et les routes.
+
+1. **Lancer les tests** :
+   ```bash
+   pytest
+   ```
+
+2. **Détails des tests** :
+   - `test_models.py` : Vérifie la création des utilisateurs, œuvres, et émotions.
+   - `test_routes.py` : Teste l'accès aux pages (index, artwork, profile, etc.) et les actions comme la suppression d'œuvres.
+   - Les tests utilisent une base de données SQLite en mémoire pour éviter de modifier la base de production.
 
 ## Contribuer
-1. Forkez le projet.
-2. Créez une branche pour votre fonctionnalité (`git checkout -b feature/nouvelle-fonctionnalite`).
-3. Committez vos modifications (`git commit -m "Ajout de nouvelle fonctionnalité"`).
-4. Poussez votre branche (`git push origin feature/nouvelle-fonctionnalite`).
-5. Ouvrez une Pull Request.
+
+Nous accueillons les contributions ! Pour contribuer :
+
+1. **Forker le dépôt** et créer une branche pour votre fonctionnalité :
+   ```bash
+   git checkout -b feature/nouvelle-fonctionnalite
+   ```
+
+2. **Écrire du code propre** avec des tests associés.
+3. **Exécuter les tests** pour s'assurer que tout fonctionne :
+   ```bash
+   pytest
+   ```
+
+4. **Soumettre une pull request** avec une description claire des changements.
+
+### Bonnes pratiques
+
+- Suivez les conventions de codage PEP 8.
+- Ajoutez des tests pour chaque nouvelle fonctionnalité.
+- Documentez les nouvelles fonctionnalités dans ce README.
+- Évitez de modifier les fichiers sensibles (ex. `instance/config.py`) dans les commits.
 
 ## Licence
+
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
