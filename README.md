@@ -309,7 +309,6 @@ Assurez-vous de respecter les conventions de code (PEP 8) et d'ajouter des tests
 - **Framework** : Flask, Bootstrap 5
 - **Bibliothèques** : Transformers (Hugging Face), Pillow, WordCloud
 - **Icônes** : Font Awesome, Bootstrap Icons
-- **Développeur** : [Votre Nom]
 
 ---
 
