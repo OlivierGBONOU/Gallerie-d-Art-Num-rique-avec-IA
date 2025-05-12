@@ -1,0 +1,310 @@
+/* static/css/style.css */
+
+/* Variables de couleurs - Palette inspirée des œuvres d'art */
+:root {
+    --primary-color: #6B4F4F; /* Brun terreux profond */
+    --secondary-color: #9E7676; /* Brun rosé */
+    --accent-color: #D5B4B4; /* Beige rosé clair */
+    --light-color: #F5EBEB; /* Crème très clair */
+    --dark-color: #3A3845; /* Noir bleuté profond */
+    --text-color: #333333; /* Gris foncé pour le texte */
+    --text-light: #5D5D5D; /* Gris moyen */
+    --success-color: #4A8C7D; /* Vert bleuté */
+    --warning-color: #D4A762; /* Doré */
+    --danger-color: #C1666B; /* Rouge terracotta */
+}
+
+/* Reset et base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--light-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--secondary-color);
+}
+
+/* Typographie */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.display-1, .display-2, .display-3, .display-4 {
+    font-weight: 700;
+    letter-spacing: -0.05rem;
+}
+
+.lead {
+    font-size: 1.25rem;
+    color: var(--text-light);
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    padding: 0 1.5rem;
+    margin: 0 auto;
+}
+
+/* Navigation */
+.navbar {
+    background-color: var(--light-color) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--primary-color) !important;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    color: var(--dark-color) !important;
+}
+
+.nav-link:hover {
+    color: var(--secondary-color) !important;
+}
+
+/* Cartes d'œuvres d'art */
+.card {
+    border: none !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: white;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-img-top {
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.03);
+}
+
+/* Boutons */
+.btn {
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-outline-danger {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-outline-warning {
+    color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+.btn-outline-warning:hover {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+/* Formulaires */
+.form-control, .form-select {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 0.25rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.25rem rgba(158, 118, 118, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+/* Alertes */
+.alert {
+    border-radius: 0.25rem;
+    padding: 1rem;
+}
+
+.alert-primary {
+    background-color: rgba(107, 79, 79, 0.1);
+    border-color: rgba(107, 79, 79, 0.3);
+    color: var(--primary-color);
+}
+
+/* Pagination */
+.pagination .page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pagination .page-link {
+    color: var(--primary-color);
+}
+
+/* Section artistique spéciale */
+.artworks-grid {
+    margin-top: 2rem;
+}
+
+.artwork-detail-img {
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Effets de survol artistiques */
+.hover-shadow {
+    transition: box-shadow 0.3s ease;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Avatar utilisateur */
+.avatar {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 2rem 0;
+    margin-top: 4rem;
+}
+
+/* Animation subtile pour les interactions */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    
+    .display-3 {
+        font-size: 2.5rem;
+    }
+    
+    .artworks-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Styles spécifiques pour la page d'œuvre */
+.emotion-chart-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.comment-card {
+    border-left: 3px solid var(--accent-color);
+    transition: all 0.3s ease;
+}
+
+.comment-card:hover {
+    border-left-color: var(--secondary-color);
+    background-color: rgba(245, 235, 235, 0.3);
+}
+
+/* Admin */
+.admin-dashboard-card {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border-left: 4px solid var(--primary-color);
+}
+
+/* Override Bootstrap */
+.bg-light {
+    background-color: var(--light-color) !important;
+}
+
+.text-muted {
+    color: var(--text-light) !important;
+}
+
+/* Effet de cadre pour les images artistiques */
+.art-frame {
+    border: 15px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background: white;
+    margin: 1rem 0;
+}
+
+/* Animation au chargement */
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+.loading-pulse {
+    animation: pulse 1.5s infinite ease-in-out;
+}
