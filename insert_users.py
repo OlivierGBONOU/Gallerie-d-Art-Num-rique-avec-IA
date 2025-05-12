@@ -51,46 +51,6 @@ users = [
         "bio": "Artiste numérique, j'explore les univers fantastiques.",
         "avatar": "uploads/avatar5.jpg",
         "is_admin": False
-    },
-    {
-        "username": "paul_peinture",
-        "email": "paul.peinture@example.com",
-        "password": "password123",
-        "bio": "Peintre abstrait, mes œuvres expriment le chaos intérieur.",
-        "avatar": "uploads/avatar6.jpg",
-        "is_admin": False
-    },
-    {
-        "username": "clara_vision",
-        "email": "clara.vision@example.com",
-        "password": "password123",
-        "bio": "Aquarelliste, j'aime les paysages doux et apaisants.",
-        "avatar": "uploads/avatar7.jpg",
-        "is_admin": False
-    },
-    {
-        "username": "nico_sculpt",
-        "email": "nico.sculpt@example.com",
-        "password": "password123",
-        "bio": "Sculpteur sur bois, inspiré par les traditions anciennes.",
-        "avatar": "uploads/avatar8.jpg",
-        "is_admin": False
-    },
-    {
-        "username": "lea_graphiste",
-        "email": "lea.graphiste@example.com",
-        "password": "password123",
-        "bio": "Graphiste et illustratrice, fan de couleurs vives.",
-        "avatar": "uploads/avatar9.jpg",
-        "is_admin": False
-    },
-    {
-        "username": "theo_art",
-        "email": "theo.art@example.com",
-        "password": "password123",
-        "bio": "Artiste multidisciplinaire, je mélange peinture et collage.",
-        "avatar": "uploads/avatar10.jpg",
-        "is_admin": False
     }
 ]
 
