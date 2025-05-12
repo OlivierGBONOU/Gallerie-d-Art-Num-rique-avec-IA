@@ -145,4 +145,3 @@ pytest
 
 ## Licence
 Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-```
