@@ -83,7 +83,7 @@
 ## Installation
 1. Clonez le dépôt :
    ```bash
-   git clone https://github.com/votre-utilisateur/gallerium.git
+   git clone https://github.com/OlivierGBONOU/Gallerie-d-Art-Num-rique-avec-IA.git
    cd gallerium
    ```
 
@@ -124,30 +124,9 @@
 ## Accès administrateur
 Les pages réservées aux administrateurs (comme `/admin/dashboard` et `/admin/moderation`) sont protégées par un décorateur défini dans `app/utils/decorators.py` (probablement `@admin_required`). Pour qu'un utilisateur accède à ces pages :
 1. L'utilisateur doit être authentifié.
-2. L'utilisateur doit avoir un rôle `admin` dans la base de données (table `users`, champ `role` ou équivalent).
+2. L'utilisateur doit avoir un rôle `admin` dans la base de données.
 3. Lors de l'inscription ou via une action manuelle dans la base de données, un administrateur doit attribuer le rôle `admin` à l'utilisateur.
 4. Une fois connecté, l'administrateur peut accéder aux routes sous `/admin/*` pour gérer les utilisateurs, modérer les contenus et consulter les statistiques.
-
-Exemple de configuration dans `app/models.py` :
-```python
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    role = db.Column(db.String(20), default='user')  # 'user' ou 'admin'
-```
-
-Exemple de décorateur dans `app/utils/decorators.py` :
-```python
-from functools import wraps
-from flask_login import current_user
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or current_user.role != 'admin':
-            abort(403)
-        return f(*args, **kwargs)
-    return decorated_function
-```
 
 ## Tests
 Les tests sont situés dans le dossier `tests/` et utilisent **Pytest**. Pour exécuter les tests :
