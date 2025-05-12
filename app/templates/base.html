@@ -36,11 +36,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('admin.notifications') }}">
-                                    Notifications
-                                    {% set unread_count = current_user.notifications.filter_by(is_read=False).count() %}
-                                    {% if unread_count > 0 %}
-                                        <span class="badge rounded-pill bg-danger ms-1">{{ unread_count }}</span>
-                                    {% endif %}
+                                    <span>Notifications non lues : {{ unread_count }}</span>
                                 </a>
                             </li>
                         {% endif %}
