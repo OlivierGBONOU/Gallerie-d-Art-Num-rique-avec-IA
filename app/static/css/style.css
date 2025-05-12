@@ -20,7 +20,8 @@
     --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
-    --card-radius: 0.5rem;
+    --card-radius: 12px;
+    --card-padding: 1.5rem;
 }
 
 /* Reset et base */
@@ -168,53 +169,187 @@ h2:hover::after {
     color: var(--secondary-color) !important;
 }
 
-/* Cartes d'œuvres d'art améliorées */
-.card {
-    border: none !important;
-    transition: transform var(--transition-norm), box-shadow var(--transition-norm);
+/* CARTES D'ŒUVRES D'ART - STYLE AMÉLIORÉ */
+.artwork-card {
+    border: none;
+    transition: all var(--transition-slow);
     background-color: white;
-    overflow: hidden;
     border-radius: var(--card-radius);
+    overflow: hidden;
     position: relative;
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.card::before {
+.artwork-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.artwork-card::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, transparent 65%, var(--accent-color) 100%);
+    background: linear-gradient(135deg, rgba(213, 180, 180, 0.1) 0%, rgba(107, 79, 79, 0.05) 100%);
     opacity: 0;
     transition: opacity var(--transition-norm);
     z-index: 1;
     pointer-events: none;
 }
 
-.card:hover::before {
-    opacity: 0.7;
+.artwork-card:hover::before {
+    opacity: 1;
 }
 
-.card:hover {
-    transform: translateY(-8px) scale(1.01);
-    box-shadow: var(--shadow-lg) !important;
+.artwork-image-container {
+    position: relative;
+    overflow: hidden;
+    height: 280px;
+    background-color: #f8f8f8;
 }
 
-.card-img-top {
-    transition: transform var(--transition-slow);
+.artwork-image {
     width: 100%;
-    height: 240px;
+    height: 100%;
     object-fit: cover;
+    transition: transform var(--transition-slow);
 }
 
-.card:hover .card-img-top {
-    transform: scale(1.08);
+.artwork-card:hover .artwork-image {
+    transform: scale(1.05);
 }
 
-.card-body {
+.artwork-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.35rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 2;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.artwork-card:hover .artwork-badge {
+    transform: scale(1.05);
+    background-color: var(--secondary-color);
+}
+
+.artwork-body {
+    padding: var(--card-padding);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     position: relative;
     z-index: 2;
+}
+
+.artwork-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    transition: color var(--transition-fast);
+}
+
+.artwork-card:hover .artwork-title {
+    color: var(--primary-color);
+}
+
+.artwork-artist {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+}
+
+.artwork-description {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 1.2rem;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.artwork-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.artwork-price {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.artwork-year {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+.artwork-actions {
+    position: absolute;
+    bottom: var(--card-padding);
+    right: var(--card-padding);
+    display: flex;
+    gap: 0.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition-norm);
+}
+
+.artwork-card:hover .artwork-actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Grille d'œuvres d'art */
+.artworks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+@media (max-width: 992px) {
+    .artworks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .artworks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .artwork-image-container {
+        height: 240px;
+    }
+}
+
+@media (max-width: 576px) {
+    .artworks-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .artwork-image-container {
+        height: 300px;
+    }
 }
 
 /* Boutons améliorés */
@@ -342,11 +477,7 @@ h2:hover::after {
 }
 
 /* Section artistique spéciale */
-.artworks-grid {
-    margin-top: 2rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+.artworks-section {
     opacity: 0;
     transform: translateY(20px);
     animation: fadeInUp 0.8s ease forwards;
@@ -360,6 +491,8 @@ h2:hover::after {
     border-radius: var(--card-radius);
     box-shadow: var(--shadow-md);
     transition: all var(--transition-norm);
+    max-width: 100%;
+    height: auto;
 }
 
 .artwork-detail-img:hover {
@@ -446,30 +579,35 @@ footer a:hover {
     transform: translateY(0);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .navbar-brand {
-        font-size: 1.5rem;
-    }
-    
-    .display-3 {
-        font-size: 2.5rem;
-    }
-    
-    .artworks-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    h2::after {
-        width: 40px;
-    }
-    
-    h2:hover::after {
-        width: 80px;
-    }
+/* Styles spécifiques pour la page d'œuvre */
+.artwork-detail-container {
+    background-color: white;
+    border-radius: var(--card-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
 }
 
-/* Styles spécifiques pour la page d'œuvre */
+.artwork-meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.artwork-meta-item {
+    flex: 1 1 200px;
+    padding: 1rem;
+    background-color: rgba(245, 235, 235, 0.5);
+    border-radius: var(--card-radius);
+    transition: all var(--transition-fast);
+}
+
+.artwork-meta-item:hover {
+    background-color: rgba(213, 180, 180, 0.2);
+    transform: translateY(-3px);
+}
+
 .emotion-chart-container {
     background-color: white;
     border-radius: var(--card-radius);
@@ -685,4 +823,91 @@ ul.styled-list li:hover:before {
     background-color: var(--secondary-color);
     transform: translateY(-5px);
     box-shadow: var(--shadow-lg);
+}
+
+/* Filtres pour les œuvres */
+.artwork-filters {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    margin-bottom: 1rem;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.filter-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+/* État de chargement */
+.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: var(--card-radius);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--accent-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Overlay pour les cartes */
+.artwork-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity var(--transition-norm);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    color: white;
+    z-index: 2;
+}
+
+.artwork-card:hover .artwork-overlay {
+    opacity: 1;
+}
+
+.artwork-overlay-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    transform: translateY(20px);
+    transition: transform var(--transition-slow);
+}
+
+.artwork-overlay-artist {
+    font-size: 1rem;
+    transform: translateY(20px);
+    transition: transform var(--transition-slow) 0.1s;
+}
+
+.artwork-card:hover .artwork-overlay-title,
+.artwork-card:hover .artwork-overlay-artist {
+    transform: translateY(0);
 }

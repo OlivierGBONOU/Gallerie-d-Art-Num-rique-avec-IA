@@ -5,6 +5,15 @@ from wtforms import StringField, PasswordField, TextAreaField, SelectField, File
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 from flask_wtf.file import FileField, FileAllowed
 
+DEFAULT_EMOTIONS = [
+    "Joie",
+    "Tristesse",
+    "Colère",
+    "Peur",
+    "Surprise",
+    "Dégoût"
+]
+
 class EmptyForm(FlaskForm):
     """Formulaire vide utilisé pour valider le jeton CSRF uniquement."""
     pass
@@ -23,7 +32,7 @@ class ArtworkForm(FlaskForm):
     title = StringField('Titre', validators=[DataRequired(), Length(min=1, max=128)])
     description = TextAreaField('Description', validators=[DataRequired()])
     image = FileField('Image', validators=[FileAllowed(['jpg', 'png'], 'Images uniquement (.jpg, .png)')])
-    emotion_target = SelectField('Émotion cible', validators=[DataRequired()], choices=[])
+    emotion_target = SelectField('Émotion cible', validators=[DataRequired()], choices=DEFAULT_EMOTIONS)
     submit = SubmitField('Soumettre')
 
 class EditArtworkForm(ArtworkForm):

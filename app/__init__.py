@@ -82,17 +82,29 @@ def create_app():
     @emotion_cli.command('init')
     def init_emotions_command():
         """Initialise les émotions dans la base de données."""
-        from app.models import Emotion
-        emotions = ['Joie', 'Tristesse', 'Colère', 'Peur', 'Surprise', 'Dégoût']
+        from app.models import Emotion, DEFAULT_EMOTIONS
         with app.app_context():
-            for emotion_name in emotions:
+            for emotion_name in DEFAULT_EMOTIONS:
                 if not Emotion.query.filter_by(name=emotion_name).first():
                     emotion = Emotion(name=emotion_name)
                     db.session.add(emotion)
+                    app.logger.info(f"Émotion '{emotion_name}' ajoutée.")
+                    print(f"Émotion '{emotion_name}' ajoutée.")
             db.session.commit()
-            app.logger.info(f"Émotions initialisées : {emotions}")
-            print(f"Émotions initialisées : {emotions}")
+            app.logger.info("Initialisation des émotions terminée.")
+            print("Initialisation des émotions terminée.")
 
     app.cli.add_command(emotion_cli)
+    
+    # Commande CLI pour insérer les utilisateurs
+    user_cli = AppGroup('user', help='Commands for managing users')
+
+    @user_cli.command('init')
+    def init_users_command():
+        """Initialise les utilisateurs dans la base de données."""
+        from insert_users import insert_users
+        insert_users()
+
+    app.cli.add_command(user_cli)
 
     return app
