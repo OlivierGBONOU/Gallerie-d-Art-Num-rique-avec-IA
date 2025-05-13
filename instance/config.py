@@ -1,1 +1,0 @@
-# Configuration privée (clé secrète, DB locale)
