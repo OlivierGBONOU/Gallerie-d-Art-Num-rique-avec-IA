@@ -14,7 +14,10 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-light shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="{{ url_for('main.index') }}">Gallerium</a>
+            <a class="navbar-brand fw-bold fs-4" href="{{ url_for('main.index') }}">
+                <img src="{{ url_for('static', filename='images/icone.png') }}" alt="Logo Gallerium" style="height: 40px; margin-right: 2px;">
+                Gallerium
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
