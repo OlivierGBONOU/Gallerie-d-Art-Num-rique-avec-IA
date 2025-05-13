@@ -1,8 +1,13 @@
-# README - Gallerium
+# Projet de programmation WEB - Gallerium
+
+### À propos de moi
+- **Nom** : GBONOU Kossi Olivier Richard
+- **Rôle** : Étudiant
+- **Email** : richard.gbonou@ensea.edu.ci
+- [<span style="color:light-blue">Portfolio</span>](https://sites.google.com/view/gbonou-olivier/accueil)
 
 ## Introduction
-
-Gallerium est une plateforme web interactive conçue pour permettre aux utilisateurs de partager, découvrir et interagir avec des œuvres d'art numériques. Construite avec le framework **Flask** en Python, cette application offre une expérience utilisateur riche, intégrant des fonctionnalités telles que l'upload d'œuvres, l'analyse des émotions, les interactions sociales (likes, commentaires, votes), ainsi qu'un panneau d'administration robuste pour la modération. Ce README fournit une description détaillée et complète du projet, de son architecture, de ses fonctionnalités, et des instructions pour son utilisation et son développement.
+**Gallerium** est une plateforme web interactive conçue pour permettre aux utilisateurs de partager, découvrir et interagir avec des œuvres d'art numériques. Construite avec le framework **Flask** en Python, cette application offre une expérience utilisateur riche, intégrant des fonctionnalités telles que l'upload d'œuvres, l'analyse des émotions, les interactions sociales (likes, commentaires, votes), ainsi qu'un panneau d'administration robuste pour la modération. Ce document fournit une description détaillée et complète du projet, de son architecture, de ses fonctionnalités, et des instructions pour son utilisation et son développement.
 
 ---
 
@@ -12,19 +17,27 @@ Gallerium propose une gamme complète de fonctionnalités pour les utilisateurs 
 
 ### 1. **Gestion des Utilisateurs**
 - **Inscription et Connexion** : Les utilisateurs peuvent créer un compte avec un nom d'utilisateur, un email et un mot de passe, ou se connecter à un compte existant. Les mots de passe sont hachés de manière sécurisée avec `pbkdf2:sha256`.
+  
 - **Profil Utilisateur** : Chaque utilisateur dispose d'une page de profil où il peut voir ses informations (nom d'utilisateur, email, bio, avatar) et ses œuvres publiées. Les utilisateurs peuvent modifier leur profil, y compris leur avatar et leur bio.
+
 - **Authentification Sécurisée** : Utilisation de `Flask-Login` pour gérer les sessions utilisateur et de `Flask-WTF` pour la protection CSRF.
 
 ### 2. **Gestion des Œuvres**
 - **Upload d'Œuvres** : Les utilisateurs authentifiés peuvent télécharger des œuvres d'art (images au format JPEG ou PNG) accompagnées d'un titre, d'une description et d'une émotion cible (parmi une liste prédéfinie : Joie, Tristesse, Colère, Peur, Surprise, Dégoût).
+
 - **Édition et Suppression** : Les utilisateurs peuvent modifier ou supprimer leurs propres œuvres via une interface dédiée.
-- **Analyse des Émotions** : Lors de l'upload ou de la modification d'une œuvre, une analyse automatique des émotions est effectuée sur la description grâce à un modèle NLP pré-entraîné (`j-hartmann/emotion-english-distilroberta-base`).
+  
+- **Analyse des Émotions** : Lors de l'upload ou de la modification d'une œuvre, une analyse automatique des émotions est effectuée sur la description grâce à **un modèle NLP pré-entraîné (`j-hartmann/emotion-english-distilroberta-base`)**.
+  
 - **Traitement des Images** : Les images téléchargées sont validées (JPEG/PNG uniquement) et redimensionnées pour optimiser l'espace de stockage (taille maximale : 800x800 pixels).
 
 ### 3. **Interactions Sociales**
 - **Likes** : Les utilisateurs authentifiés peuvent liker ou retirer leur like sur une œuvre. Le nombre total de likes est affiché.
+
 - **Votes Émotionnels** : Les utilisateurs peuvent voter pour associer une émotion à une œuvre, ce qui permet de comparer l'émotion cible (définie par l'auteur) avec les perceptions des autres utilisateurs.
+
 - **Commentaires** : Les utilisateurs peuvent ajouter des commentaires sur les œuvres. Un nuage de mots (wordcloud) est généré à partir des commentaires pour visualiser les termes les plus fréquents.
+
 - **Signalements** : Les utilisateurs peuvent signaler une œuvre ou un commentaire inapproprié, avec une raison obligatoire. Les signalements sont envoyés aux administrateurs via des notifications et des emails.
 
 ### 4. **Recherche et Navigation**
@@ -34,8 +47,11 @@ Gallerium propose une gamme complète de fonctionnalités pour les utilisateurs 
 
 ### 5. **Administration**
 - **Tableau de Bord Admin** : Accessible uniquement aux utilisateurs marqués comme administrateurs (`is_admin=True`), il affiche un aperçu des utilisateurs, œuvres et commentaires, avec des actions rapides (bloquer un utilisateur, supprimer une œuvre ou un commentaire).
+
 - **Modération des Signalements** : Les administrateurs peuvent consulter les signalements non résolus, supprimer le contenu signalé (œuvre ou commentaire) ou marquer le signalement comme résolu.
+
 - **Notifications Admin** : Les signalements génèrent des notifications pour les administrateurs, visibles dans une interface dédiée. Les notifications peuvent être marquées comme lues.
+
 - **Envoi d'Emails** : Lorsqu'un signalement est soumis, un email est envoyé à chaque administrateur via un serveur SMTP (Mailtrap par défaut pour les tests).
 
 ### 6. **Fonctionnalités Techniques**
@@ -112,7 +128,7 @@ gallerium/
 
 1. **config.py** : Contient la classe `Config` avec les paramètres de l'application (clé secrète, URI de la base de données, configuration email, dossier d'upload, etc.).
 2. **run.py** : Script principal pour lancer l'application. Crée les tables de la base de données si elles n'existent pas.
-3. **app/__init__.py** : Initialise l'application Flask, configure les extensions (`SQLAlchemy`, `Flask-Login`, `Flask-WTF`, `Flask-Mail`, `Flask-Migrate`), et enregistre les blueprints.
+3. **app/__init\__.py** : Initialise l'application Flask, configure les extensions (`SQLAlchemy`, `Flask-Login`, `Flask-WTF`, `Flask-Mail`, `Flask-Migrate`), et enregistre les blueprints.
 4. **app/models.py** : Définit les modèles SQLAlchemy pour la gestion des données (utilisateurs, œuvres, émotions, etc.).
 5. **app/forms.py** : Définit les formulaires Flask-WTF pour l'inscription, la connexion, l'upload d'œuvres, etc.
 6. **app/utils/** : Contient des modules utilitaires pour l'analyse des émotions, le traitement des images, la sécurité, et la génération de nuages de mots.
@@ -160,7 +176,7 @@ pip install -r requirements.txt
 ### 1. Cloner le Répertoire
 
 ```bash
-git clone <url-du-répertoire>
+git clone https://github.com/OlivierGBONOU/Gallerie-d-Art-Num-rique-avec-IA.git
 cd gallerium
 ```
 
@@ -210,15 +226,7 @@ flask db migrate
 flask db upgrade
 ```
 
-### 6. Initialiser les Émotions (Optionnel)
-
-Pour ajouter les émotions par défaut à la base de données, décommentez et exécutez la commande CLI dans `app/__init__.py` :
-
-```bash
-flask emotion init
-```
-
-### 7. Lancer l'Application
+### 6. Lancer l'Application
 
 ```bash
 python run.py
@@ -233,16 +241,36 @@ L'application sera accessible à `http://127.0.0.1:5000`.
 ### Interface Utilisateur
 
 1. **Accueil** : Parcourez les œuvres récentes ou utilisez la barre de recherche pour filtrer par mot-clé, émotion ou tri.
+   ![Texte alternatif](images/accueil.jpg)
+
 2. **Inscription/Connexion** : Créez un compte ou connectez-vous pour accéder aux fonctionnalités d'upload et d'interaction.
+  ![Texte alternatif](images/inscription.jpg)
+  ![Texte alternatif](images/connexion.jpg)
+
 3. **Profil** : Consultez vos œuvres, modifiez votre profil, ou ajoutez une nouvelle œuvre.
+  ![Texte alternatif](images/profile.jpg)
+
 4. **Œuvres** : Consultez une œuvre, votez pour une émotion, ajoutez un commentaire, ou signalez un contenu inapproprié.
+   ![Texte alternatif](images/oeuvre.jpg)
+
+   ![Texte alternatif](images/ajout_oeuvre.jpg)
+
 5. **Administration** : Si vous êtes administrateur, accédez au tableau de bord pour gérer les utilisateurs, œuvres, commentaires, et signalements.
 
 ### Interface Admin
 
 - **Tableau de Bord** : Vue d'ensemble des utilisateurs, œuvres et commentaires avec options de suppression/bannissement.
+  ![Texte alternatif](images/dashboard.jpg)
+
 - **Modération** : Traitez les signalements en supprimant le contenu ou en les marquant comme résolus.
+  ![Texte alternatif](images/moderation.jpg)
+
 - **Notifications** : Consultez et gérez les notifications des signalements.
+  ![Texte alternatif](images/notification.jpg)
+
+Pour se connecter au compte administrateur :
+ * **Nom d'utilisateur** : olivier_richard
+ * **Mot de passe** : Oliviertyui2004
 
 ---
 
@@ -314,4 +342,4 @@ Assurez-vous de respecter les conventions de code (PEP 8) et d'ajouter des tests
 
 ## Licence
 
-Ce projet est sous licence MIT. Consultez le fichier `LICENSE` pour plus de détails.
+Aucune.
