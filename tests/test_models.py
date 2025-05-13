@@ -5,7 +5,7 @@ from datetime import datetime
 
 def test_user_creation(app):
     with app.app_context():
-        user = User(username="testuser", email="test@example.com", password_hash="hashed")
+        user = User(username="testuser", email="test@example.com", password_hash="hashed", bio = "testuser", avatar = "test", is_admin = 1)
         db.session.add(user)
         db.session.commit()
         assert User.query.count() == 1
