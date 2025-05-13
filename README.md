@@ -2,7 +2,7 @@
 
 ### À propos de moi
 - **Nom** : GBONOU Kossi Olivier Richard
-- **Rôle** : Étudiant
+- **Rôle** : Étudiant Analyste Statisticien
 - **Email** : richard.gbonou@ensea.edu.ci
 - [<span style="color:light-blue">Portfolio</span>](https://sites.google.com/view/gbonou-olivier/accueil)
 
@@ -241,11 +241,13 @@ L'application sera accessible à `http://127.0.0.1:5000`.
 ### Interface Utilisateur
 
 1. **Accueil** : Parcourez les œuvres récentes ou utilisez la barre de recherche pour filtrer par mot-clé, émotion ou tri.
-   ![Texte alternatif](images/accueil.jpg)
+   ![Texte alternatif](images/accueil.jpg)  
+
 
 2. **Inscription/Connexion** : Créez un compte ou connectez-vous pour accéder aux fonctionnalités d'upload et d'interaction.
   ![Texte alternatif](images/inscription.jpg)
-  ![Texte alternatif](images/connexion.jpg)
+  ![Texte alternatif](images/connexion.jpg)  
+
 
 3. **Profil** : Consultez vos œuvres, modifiez votre profil, ou ajoutez une nouvelle œuvre.
   ![Texte alternatif](images/profile.jpg)
@@ -253,9 +255,11 @@ L'application sera accessible à `http://127.0.0.1:5000`.
 4. **Œuvres** : Consultez une œuvre, votez pour une émotion, ajoutez un commentaire, ou signalez un contenu inapproprié.
    ![Texte alternatif](images/oeuvre.jpg)
 
-   ![Texte alternatif](images/ajout_oeuvre.jpg)
+   ![Texte alternatif](images/ajout_oeuvre.jpg)  
 
-5. **Administration** : Si vous êtes administrateur, accédez au tableau de bord pour gérer les utilisateurs, œuvres, commentaires, et signalements.
+
+5. **Administration** : Si vous êtes administrateur, accédez au tableau de bord pour gérer les utilisateurs, œuvres, commentaires, et signalements.  
+
 
 ### Interface Admin
 
