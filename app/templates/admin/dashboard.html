@@ -26,9 +26,12 @@
                                 <span class="item-email">{{ user.email }}</span>
                             </div>
                             {% if not user.is_admin %}
-                                <a href="{{ url_for('admin.block_user', user_id=user.id) }}" class="btn btn-sm btn-outline">
-                                    <i class="fas fa-ban"></i> Bloquer
-                                </a>
+                                <form action="{{ url_for('admin.block_user', user_id=user.id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment bloquer cet utilisateur ?');">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-ban"></i>Bloquer
+                                    </button>
+                                </form>
                             {% else %}
                                 <span class="badge badge-admin">Admin</span>
                             {% endif %}
@@ -51,9 +54,12 @@
                                 <strong>{{ artwork.title }}</strong>
                                 <span class="item-author">par {{ artwork.user.username }}</span>
                             </div>
-                            <a href="{{ url_for('admin.delete_artwork', artwork_id=artwork.id) }}" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            <form action="{{ url_for('admin.delete_artwork', artwork_id=artwork.id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cette œuvre ?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Supprimer
+                                </button>
+                            </form>
                         </li>
                     {% endfor %}
                 </ul>
@@ -73,9 +79,10 @@
                                 <q class="comment-content">{{ comment.content }}</q>
                                 <span class="item-author">par {{ comment.user.username }}</span>
                             </div>
-                            <a href="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            <form action="{{ url_for('admin.delete_comment', comment_id=comment.id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ce commentaire ?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
                         </li>
                     {% endfor %}
                 </ul>

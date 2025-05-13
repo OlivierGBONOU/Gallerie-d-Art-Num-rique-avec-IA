@@ -28,11 +28,14 @@ class Artwork(db.Model):
     description = db.Column(db.Text, nullable=False)
     image_path = db.Column(db.String(128), nullable=False)
     emotion_target = db.Column(db.String(64), nullable=False)
-    emotion_detected = db.Column(db.String(64))  # Champ pour l'émotion détectée
+    emotion_detected = db.Column(db.String(64))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     user = db.relationship('User', backref=db.backref('artworks', lazy=True))
-    comments = db.relationship('Comment', backref='artwork', lazy=True)  # Nouvelle relation
+    comments = db.relationship('Comment', backref='artwork', lazy=True, cascade='all, delete-orphan')
+    likes = db.relationship('Like', backref='artwork', lazy=True, cascade='all, delete-orphan')
+    votes = db.relationship('Vote', backref='artwork', lazy=True, cascade='all, delete-orphan')
+    reports = db.relationship('Report', backref='artwork', lazy=True, cascade='all, delete-orphan')
 
 class Emotion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,7 +50,7 @@ class Vote(db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    artwork_id = db.Column(db.Integer, db.ForeignKey('artwork.id'), nullable=False)
+    artwork_id = db.Column(db.Integer, db.ForeignKey('artwork.id', ondelete='CASCADE'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('comments', lazy=True))
 
@@ -60,7 +63,6 @@ class Report(db.Model):
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     resolved = db.Column(db.Boolean, default=False)
     user = db.relationship('User', backref=db.backref('reports', lazy=True))
-    artwork = db.relationship('Artwork', backref=db.backref('reports', lazy=True))
     comment = db.relationship('Comment', backref=db.backref('reports', lazy=True))
     
 class Notification(db.Model):
@@ -74,6 +76,5 @@ class Notification(db.Model):
 class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    artwork_id = db.Column(db.Integer, db.ForeignKey('artwork.id'), nullable=False)
+    artwork_id = db.Column(db.Integer, db.ForeignKey('artwork.id', ondelete='CASCADE'), nullable=False)
     user = db.relationship('User', backref='likes')
-    artwork = db.relationship('Artwork', backref='likes')

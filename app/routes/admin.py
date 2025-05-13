@@ -63,9 +63,6 @@ def resolve_report(report_id):
 @bp.route('/admin/delete_artwork/<int:artwork_id>', methods=['POST'])
 @login_required
 def delete_artwork(artwork_id):
-    if not current_user.is_admin:
-        flash('Vous n’avez pas la permission d’accéder à cette page.')
-        return redirect(url_for('main.index'))
     artwork = Artwork.query.get_or_404(artwork_id)
     db.session.delete(artwork)
     db.session.commit()
@@ -75,9 +72,6 @@ def delete_artwork(artwork_id):
 @bp.route('/admin/delete_comment/<int:comment_id>', methods=['POST'])
 @login_required
 def delete_comment(comment_id):
-    if not current_user.is_admin:
-        flash('Vous n’avez pas la permission d’accéder à cette page.')
-        return redirect(url_for('main.index'))
     comment = Comment.query.get_or_404(comment_id)
     db.session.delete(comment)
     db.session.commit()
@@ -87,16 +81,10 @@ def delete_comment(comment_id):
 @bp.route('/admin/block_user/<int:user_id>', methods=['POST'])
 @login_required
 def block_user(user_id):
-    if not current_user.is_admin:
-        flash('Vous n’avez pas la permission d’accéder à cette page.')
-        return redirect(url_for('main.index'))
     user = User.query.get_or_404(user_id)
-    if user.is_admin:
-        flash('Impossible de bloquer un administrateur.')
-    else:
-        db.session.delete(user)
-        db.session.commit()
-        flash('Utilisateur bloqué.')
+    user.is_blocked = True
+    db.session.commit()
+    flash('Utilisateur bloqué avec succès.', 'success')
     return redirect(url_for('admin.dashboard'))
 
 @bp.route('/moderate/<int:report_id>', methods=['GET', 'POST'])
