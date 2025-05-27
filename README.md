@@ -1,6 +1,6 @@
 <h1>Gallerium - Plateforme Web d'Art Numérique</h1>
 
-<img src="images/icone.png" alt="Logo Gallerium" width="150"/>
+<img src="images/icone.png" alt="Logo Gallerium" width="150" style="display: block; margin: 0 auto;">
 
 <p><strong>Une plateforme interactive pour partager, découvrir et
 interagir avec des œuvres d'art numériques.</strong></p>
