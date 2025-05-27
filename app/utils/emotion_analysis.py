@@ -3,7 +3,6 @@
 from transformers import pipeline
 from langdetect import detect
 from deep_translator import GoogleTranslator
-from transformers import pipeline
 
 def analyze_emotion(text):
     """
