@@ -17,4 +17,5 @@ wordcloud
 matplotlib
 pytest
 pytest-flask
+langdetect
 gunicorn
