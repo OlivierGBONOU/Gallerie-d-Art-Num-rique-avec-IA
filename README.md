@@ -304,10 +304,8 @@ Aucune licence spécifiée.
 
 ------------------------------------------------------------------------
 
-::: {align="center"}
 <p><strong>Explorez, partagez, et laissez votre créativité s'exprimer
 avec Gallerium !</strong></p>
 
 <p><a href="https://github.com/OlivierGBONOU/Gallerie-d-Art-Num-rique-avec-IA">Commencez
 maintenant 🚀</a></p>
-:::
