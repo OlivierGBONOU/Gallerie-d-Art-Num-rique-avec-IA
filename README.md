@@ -1,10 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
-::: {align="center"}
 <h1>Gallerium - Plateforme Web d'Art Numérique</h1>
 
 <img src="images/icone.png" alt="Logo Gallerium" width="150"/>
@@ -14,7 +7,6 @@ interagir avec des œuvres d'art numériques.</strong></p>
 
 <p><a href="https://github.com/OlivierGBONOU/Gallerie-d-Art-Num-rique-avec-IA"><img src="https://img.shields.io/badge/GitHub-Repository-blue?logo=github" alt="GitHub"/></a>
 <a href="https://sites.google.com/view/gbonou-olivier/accueil"><img src="https://img.shields.io/badge/Portfolio-Visit-lightblue" alt="Portfolio"/></a></p>
-:::
 
 ------------------------------------------------------------------------
 
