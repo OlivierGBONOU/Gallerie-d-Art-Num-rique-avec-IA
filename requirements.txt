@@ -18,4 +18,5 @@ matplotlib
 pytest
 pytest-flask
 langdetect
+deep_translator
 gunicorn

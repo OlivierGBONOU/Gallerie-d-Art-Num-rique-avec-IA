@@ -3,13 +3,16 @@
 from datetime import datetime
 from app import create_app, db
 from app.models import User, Artwork, Emotion, Vote, Comment, Report, Notification, Like
+from flask_migrate import Migrate, upgrade
 
 app = create_app()
+migrate = Migrate(app, db)
 
 if __name__ == "__main__":
     with app.app_context():
         # Créer les tables si elles n'existent pas
         db.create_all()
+        upgrade()
         
         # Vérifier si la table User est vide
         if User.query.count() == 0:
@@ -261,4 +264,3 @@ if __name__ == "__main__":
             print("Base de données recréée avec succès !")
         else:
             print("Utilisateurs déjà présents dans la base de données.")
-    app.run(debug=True, use_reloader=True, reloader_type='stat')
